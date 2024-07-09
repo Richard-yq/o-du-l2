@@ -1,5 +1,6 @@
 ################################################################################
-#   Copyright (c) [2017-2019] [Radisys]                                        #
+#   Copyright (c)  		                            			               #
+####################### [Small Cell Integration] ###############################
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -13,64 +14,48 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
+# 									   										   #
+#                                                                              #
+#					Author Brandon.Chuang / Yu-Hsin Chuang					   #
+#                                                                              #
+#                                                                              #
+################################################################################
 
-# This is makefile for DU APP
-
+# This is makefile for open-nFAPI module
 include ../common/rsys_fancy.mak
 include ../common/env.mak
+
 COLOR=$(COLOR_RED)
 
-SRC_DIR=$(ROOT_DIR)/src/du_app/
+SRC_DIR=$(ROOT_DIR)/src/nfapi/open-nFAPI/vnf/src
 C_SRCS=$(wildcard $(SRC_DIR)/*.c)
 C_OBJS=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(C_SRCS))
 
-# prepare the list of common header files
-HDR_FILES+=$(wildcard $(CM_DIR)/env*.[hx])
-HDR_FILES+=$(wildcard $(CM_DIR)/gen*.[hx])
-HDR_FILES+=$(wildcard $(CM_DIR)/ssi*.[hx])
-HDR_FILES+=$(wildcard $(CM_DIR)/cm*.[hx])
-HDR_FILES+=$(wildcard $(CM_DIR)/lkw*.[hx])
-HDR_FILES+=$(wildcard $(CM_DIR)/lrg*.[hx])
-
-lib: $(LIB_DIR)/libduapp.a
-include $(COM_BUILD_DIR)/compile.mak
-
-ifdef XML_BASED_CONFIG
-I_OPTS+=-I/usr/include/libxml2
-endif
-I_OPTS+=-I$(ROOT_DIR)/src/mt
-I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/common
-I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/F1AP
-I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/RRC
-I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/E2AP
-I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/E2SM_KPM
-
-ifeq ($(NFAPI),YES)
-I_OPTS+=-I$(ROOT_DIR)/src/nfapi/open-nFAPI/vnf/public_inc
-I_OPTS+=-I$(ROOT_DIR)/src/nfapi/open-nFAPI/nfapi/public_inc
-I_OPTS+=-I$(ROOT_DIR)/src/nfapi/open-nFAPI/common/public_inc
 I_OPTS+=-I$(ROOT_DIR)/src/nfapi/oai_integration
-I_OPTS+=-I$(ROOT_DIR)/src/5gnrmac
-endif
+I_OPTS+=-I$(ROOT_DIR)/src/nfapi/open-nFAPI/common/public_inc
+I_OPTS+=-I$(ROOT_DIR)/src/nfapi/open-nFAPI/nfapi/public_inc
+I_OPTS+=-I$(ROOT_DIR)/src/nfapi/open-nFAPI/vnf/public_inc
+I_OPTS+=-I$(ROOT_DIR)/src/nfapi/open-nFAPI/vnf/inc
 
-ifeq ($(O1_ENABLE),YES)
-I_OPTS+=-I$(ROOT_DIR)/src/o1
-endif
+# # prepare the list of the odu header files
+HDR_FILES+=$(wildcard $(SRC_DIR)/*.[hx])
+
+lib: $(LIB_DIR)/libnfapi_vnf.a
+include $(COM_BUILD_DIR)/compile.mak
 
 #-------------------------------------------------------------#
 #Linker macros
 #-------------------------------------------------------------#
-$(LIB_DIR)/libduapp.a:$(C_OBJS)
+$(LIB_DIR)/libnfapi_vnf.a:$(C_OBJS)
 		  @echo -e "Creating Archive $(COLOR) $@ $(REVERT_COLOR)"
-		  $(Q)ar -cr $(LIB_DIR)/libduapp.a $(C_OBJS) 
+		  $(Q)ar -cr $(LIB_DIR)/libnfapi_vnf.a $(C_OBJS)
 
 #-------------------------------------------------------------#
 #Clean macros
 #-------------------------------------------------------------#
 clean:
-		  @echo -e "$(COLOR_RED)Cleaning DU APP$(REVERT_COLOR)"
-		  @echo $(SRC_DIR) $(CM_DIR)
-		  $(Q)\rm -f $(LIB_DIR)/libduapp.a $(C_OBJS) 
+		  @echo -e "$(COLOR_RED)Cleaning NFAPI_VNF$(REVERT_COLOR)"
+		  $(Q)\rm -f $(LIB_DIR)/libnfapi_vnf.a $(C_OBJS) 
 
 #**********************************************************************
 #         End of file

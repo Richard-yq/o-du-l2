@@ -57,6 +57,17 @@ I_OPTS+=-I$(ROOT_DIR)/src/5gnrsch
 I_OPTS+=-I$(ROOT_DIR)/src/intel_fapi
 I-OPTS+=-I$(ROOT_DIR)/src/wls_lib
 
+# ========= small cell integration ========= #
+ifeq ($(NFAPI),YES)
+I_OPTS+=-I$(ROOT_DIR)/src/nfapi/open-nFAPI/vnf/public_inc
+I_OPTS+=-I$(ROOT_DIR)/src/nfapi/open-nFAPI/vnf/inc
+I_OPTS+=-I$(ROOT_DIR)/src/nfapi/open-nFAPI/nfapi/public_inc
+I_OPTS+=-I$(ROOT_DIR)/src/nfapi/open-nFAPI/common/public_inc
+I_OPTS+=-I$(ROOT_DIR)/src/nfapi/oai_integration
+I_OPTS+=-I$(ROOT_DIR)/src/nfapi/small_cell_integration/public_inc
+endif
+# ========================================== #
+
 #-------------------------------------------------------------#
 #Linker macros             
 #-------------------------------------------------------------#

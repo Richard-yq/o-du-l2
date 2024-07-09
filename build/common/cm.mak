@@ -32,6 +32,15 @@ I_OPTS+=-I$(EG_DIR) -I$(SZ_DIR) -I$(CZ_DIR)
 I_OPTS+=-I$(ROOT_DIR)/src/du_app
 I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/common
 
+# ========= small cell integration ========= #
+ifeq ($(NFAPI),YES)
+I_OPTS+=-I$(ROOT_DIR)/src/nfapi/open-nFAPI/vnf/public_inc
+I_OPTS+=-I$(ROOT_DIR)/src/nfapi/open-nFAPI/nfapi/public_inc
+I_OPTS+=-I$(ROOT_DIR)/src/nfapi/open-nFAPI/common/public_inc
+I_OPTS+=-I$(ROOT_DIR)/src/nfapi/oai_integration
+endif
+# ========================================== #
+
 #-------------------------------------------------------------#
 # Define all the layers that are part of this binary so that  #
 # their coupling requirements get defined from envopt.h.      #

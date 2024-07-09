@@ -97,6 +97,14 @@ ifeq ($(O1_ENABLE),YES)
 	PLTFRM_FLAGS+=-DO1_ENABLE
 endif
 
+#############################################
+# Small Cell Integration
+# Add flag to enable the nFAPI function
+ifeq ($(NFAPI),YES)
+	PLTFRM_FLAGS+=-DNFAPI
+endif
+#############################################
+
 # The include options get merged with the options needed by
 # # the called makefiles and hence we export these to make them
 # # available to them.
@@ -134,6 +142,14 @@ L_OPTS+= -lnetconf2 -lcjson -lcurl
   L_OPTS+=-lstdc++
 endif
 
+#############################################
+# Small Cell Integration
+# The library is needed in nFAPI module
+ifeq ($(NFAPI),YES)
+	L_OPTS+=-lz
+endif
+#############################################
+
 # Export some of the flags expected from the command line.
 # # These macros are made available for the makefiles called from this makefile
 export BOARD
@@ -163,6 +179,7 @@ help:
 		@echo -e "$(OPTS)    PHY=INTEL_L1         - If not specified, Phy stub is used$(NORM)"
 		@echo -e "$(OPTS)    PHY_MODE=TIMER       - Testing mode for INTEL_L1"
 		@echo -e "$(OPTS)    COVERAGE=ENABLE      - To record the code coverage stats. Disabled by default"
+		@echo -e "$(OPTS)    NFAPI=YES            - nFAPI mode for OAI Layer1"
 		@echo -e "******************************************************************"
 
 prepare_dirs:
@@ -188,7 +205,16 @@ prepare_ric_dirs:
 	 $(Q)mkdir -p $(BIN_DIR)/ric_stub
 	 $(Q)echo -e "Directories are successfully prepared"
 
+
+# Small cell integration
+# Add nFAPI makefile --> to build the nFAPI module
 du:
+ifeq ($(NFAPI),YES)
+		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/nfapi.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/nfapi_common.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/nfapi_vnf.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/nfapi_oai_integration.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+endif		
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/asn_common.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/asn_f1ap.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/asn_e2ap.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
@@ -213,7 +239,16 @@ link_du: du
 		   $(Q)$(CC1) -g -o $(OBJ_ROOT)/odu/odu -Wl,-R../lib/:. $(OBJ_ROOT)/odu/*.o\
 			$(L_OPTS) -L$(LIB_ROOT)/odu -L$(ROOT_DIR)/libs/odu 
 
+# Small cell integrationπ
+# Add nFAPI makefile --> to clean the nFAPI module
 clean_odu: 
+ifeq ($(NFAPI),YES)
+		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/nfapi.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/nfapi_common.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/nfapi_vnf.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/nfapi_oai_integration.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+endif	
+		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/nfapi.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/du_app.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/asn_common.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/asn_f1ap.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
