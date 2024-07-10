@@ -636,27 +636,54 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
             bwp->freqAlloc.numPrb = TOTAL_PRB_20MHZ_MU0;
 	 }
 	 break;
+/* ======== small cell integration ========*/
+      case BANDWIDTH_40MHZ:
+	 {
+            bwp->freqAlloc.numPrb = TOTAL_PRB_40MHZ_MU1;
+	 }
+/* ======================================== */
       case BANDWIDTH_100MHZ:
 	 {
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+            bwp->freqAlloc.numPrb = 48; /*For OAI*/
+#else
             bwp->freqAlloc.numPrb = TOTAL_PRB_100MHZ_MU1;
+#endif
+/* ======================================== */
 	 }
 	 break;
       default:
 	 DU_LOG("\nERROR  -->  SCH : Bandwidth %d not supported", bandwidth);
 
    }
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   bwp->freqAlloc.startPrb = 27;             /* From 27 */
+   bwp->subcarrierSpacing  = 1;              /* 30Khz */
+#else
    bwp->freqAlloc.startPrb = 0;
    bwp->subcarrierSpacing  = 0;         /* 15Khz */
+#endif
    bwp->cyclicPrefix       = 0;              /* normal */
+/* ======================================== */
 
    /* fill the PDCCH PDU */
    pdcch->coresetCfg.coreSetSize = numRbs;
    pdcch->coresetCfg.startSymbolIndex = firstSymbol;
    pdcch->coresetCfg.durationSymbols = numSymbols;
    
+/* ======== small cell integration ======== */
    /* Fill Bitmap for PRBs in coreset */
+#ifdef NFAPI
+   int CORESET0_inside_rbstart = 0;
+   fillCoresetFeqDomAllocMap(((CORESET0_inside_rbstart)/6), (numRbs/6), freqDomainResource);
+   memcpy(pdcch->coresetCfg.freqDomainResource, freqDomainResource, FREQ_DOM_RSRC_SIZE);
+#else
    fillCoresetFeqDomAllocMap(((offsetPointA-offset)/6), (numRbs/6), freqDomainResource);
    memcpy(pdcch->coresetCfg.freqDomainResource, freqDomainResource, FREQ_DOM_RSRC_SIZE);
+#endif
+/* ======================================== */
 
    pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
    pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
@@ -695,17 +722,36 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
       pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
       tbSize = schCalcTbSize(sib1PduLen + TX_PAYLOAD_HDR_LEN);
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+      pdsch->codeword[cwCount].tbSize = tbSize +6;
+#else
       pdsch->codeword[cwCount].tbSize = tbSize;
+#endif
+/* ======================================== */
    }
    pdsch->dataScramblingId                   = pci;
    pdsch->numLayers                          = 1;
    pdsch->transmissionScheme                 = 0;
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   pdsch->refPoint                           = 1;
+   pdsch->dmrs.dlDmrsSymbPos                 = 580;
+#else
    pdsch->refPoint                           = 0;
    pdsch->dmrs.dlDmrsSymbPos                 = DL_DMRS_SYMBOL_POS; 
+#endif
+/* ======================================== */
    pdsch->dmrs.dmrsConfigType                = 0; /* type-1 */
    pdsch->dmrs.dlDmrsScramblingId            = pci;
    pdsch->dmrs.scid                          = 0;
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   pdsch->dmrs.numDmrsCdmGrpsNoData          = 2;
+#else
    pdsch->dmrs.numDmrsCdmGrpsNoData          = 1;
+#endif
+/* ======================================== */
    pdsch->dmrs.dmrsPorts                     = 0x0001;
    pdsch->dmrs.mappingType                   = DMRS_MAP_TYPE_A; /* Type-A */
    pdsch->dmrs.nrOfDmrsSymbols               = NUM_DMRS_SYMBOLS;
@@ -713,15 +759,31 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
 
    pdsch->pdschFreqAlloc.resourceAllocType   = 1; /* RAT type-1 RIV format */
    /* the RB numbering starts from coreset0, and PDSCH is always above SSB */
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   pdsch->pdschFreqAlloc.startPrb  = 27;
+   pdsch->pdschFreqAlloc.numPrb    = schCalcNumPrb(tbSize, DEFAULT_MCS, 10);
+#else
    pdsch->pdschFreqAlloc.startPrb  = offsetPointA + SCH_SSB_NUM_PRB;
    pdsch->pdschFreqAlloc.numPrb    = schCalcNumPrb(tbSize, DEFAULT_MCS, NUM_PDSCH_SYMBOL);
+#endif
+/* ======================================== */
    pdsch->pdschFreqAlloc.vrbPrbMapping       = 0; /* non-interleaved */
    pdsch->pdschTimeAlloc.rowIndex            = 1;
    /* This is Intel's requirement. PDSCH should start after PDSCH DRMS symbol */
+/* ======== small cell integration ======== */
+#ifdef NFAPI   
+   pdsch->pdschTimeAlloc.startSymb = 2; /* spec-38.214, Table 5.1.2.1-1 */
+   pdsch->pdschTimeAlloc.numSymb   = 10;
+   pdsch->beamPdschInfo.numPrgs              = 0;
+   pdsch->beamPdschInfo.prgSize              = 0;
+#else
    pdsch->pdschTimeAlloc.startSymb = 3; /* spec-38.214, Table 5.1.2.1-1 */
    pdsch->pdschTimeAlloc.numSymb   = NUM_PDSCH_SYMBOL;
    pdsch->beamPdschInfo.numPrgs              = 1;
    pdsch->beamPdschInfo.prgSize              = 1;
+#endif
+/* ======================================== */
    pdsch->beamPdschInfo.digBfInterfaces      = 0;
    pdsch->beamPdschInfo.prg[0].pmIdx         = 0;
    pdsch->beamPdschInfo.prg[0].beamIdx[0]    = 0;
@@ -782,8 +844,16 @@ uint8_t SchProcCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    offset = coresetIdxTable[coreset0Idx][3];
    fillCoresetFeqDomAllocMap(((cellCb->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA - offset)/6), \
                                   (numRbs/6), freqDomainResource);
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   memcpy(cellCb->cellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc,
+          freqDomainResource, FREQ_DOM_RSRC_SIZE);
+#else
    memcpy(cellCb->cellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc,\
                freqDomainResource,FREQ_DOM_RSRC_SIZE);
+#endif
+/* ======================================== */
+
    /* Fill K0 - K1 table for common cfg*/ 
    BuildK0K1Table(cellCb, &cellCb->k0K1InfoTbl, true, cellCb->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon,
                    pdschCfg, DEFAULT_UL_ACK_LIST_COUNT, defaultUlAckTbl);

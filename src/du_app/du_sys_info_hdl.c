@@ -1808,9 +1808,17 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
             /* Generic RACH Configuration */
             setup->rach_ConfigGeneric.prach_ConfigurationIndex = duRachCfg.prachCfgIdx;
             setup->rach_ConfigGeneric.msg1_FDM = duRachCfg.msg1Fdm;
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+            setup->rach_ConfigGeneric.msg1_FrequencyStart = 82;
+            setup->rach_ConfigGeneric.zeroCorrelationZoneConfig = 13;
+            setup->rach_ConfigGeneric.preambleReceivedTargetPower = -96;
+#else 
             setup->rach_ConfigGeneric.msg1_FrequencyStart = duRachCfg.msg1FreqStart;
             setup->rach_ConfigGeneric.zeroCorrelationZoneConfig = duRachCfg.zeroCorrZoneCfg;
             setup->rach_ConfigGeneric.preambleReceivedTargetPower = duRachCfg.preambleRcvdTgtPwr; 
+#endif
+/* ======================================== */    
             setup->rach_ConfigGeneric.preambleTransMax = duRachCfg.preambleTransMax;
             setup->rach_ConfigGeneric.powerRampingStep = duRachCfg.pwrRampingStep;
             setup->rach_ConfigGeneric.ra_ResponseWindow = duRachCfg.raRspWindow;
@@ -1898,7 +1906,13 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
                DU_LOG("\nERROR  -->  DU APP : Rach Config memory alloc failed");
                return RFAILED;
             }
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+            *setup->rsrp_ThresholdSSB = 19;
+#else
             *setup->rsrp_ThresholdSSB = duRachCfg.rsrpThreshSsb;
+#endif
+/* ======================================== */
 
             /* Root Sequence index */
             setup->prach_RootSequenceIndex.present = duRachCfg.rootSeqIdxPresent;
@@ -2038,7 +2052,13 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
                   DU_LOG("\nERROR  -->  DU APP : PUSCH Config memory alloc failed");
                   return RFAILED;
                }
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+               *timeDomRsrcAllocInfo->k2 = 6;
+#else
                *timeDomRsrcAllocInfo->k2 = duPuschCfg.timeDomAllocList[idx].k2;
+#endif
+/* ======================================== */               
                timeDomRsrcAllocInfo->mappingType = duPuschCfg.timeDomAllocList[idx].mapType;
                timeDomRsrcAllocInfo->startSymbolAndLength = duPuschCfg.timeDomAllocList[idx].sliv;
             }
@@ -2050,7 +2070,13 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
                DU_LOG("\nERROR  -->  DU APP : PUSCH Config memory alloc failed");
                return RFAILED;
             }
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+            *setup->msg3_DeltaPreamble = 1;
+#else
             *setup->msg3_DeltaPreamble = duPuschCfg.msg3DeltaPreamble;
+#endif
+/* ======================================== */
 
             /* P0 Nominal with grant */
             DU_ALLOC(setup->p0_NominalWithGrant, sizeof(long));
@@ -2059,7 +2085,13 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
                DU_LOG("\nERROR  -->  DU APP : PUSCH Config memory alloc failed");
                return RFAILED;
             }
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+            *setup->p0_NominalWithGrant = -90;
+#else
             *setup->p0_NominalWithGrant = duPuschCfg.p0NominalWithGrant;
+#endif
+/* ======================================== */
 
             break;
          }
@@ -2139,7 +2171,13 @@ uint8_t BuildPucchCfgCommon( struct BWP_UplinkCommon__pucch_ConfigCommon *pucchC
                DU_LOG("\nERROR  -->  DU APP : PUCCH Config memory alloc failed");
                return RFAILED;
             }
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+            *setup->p0_nominal = -90;
+#else
             *setup->p0_nominal = duPucchCfg.p0Nominal;
+#endif
+/* ======================================== */
 
             break;
          }
@@ -2334,7 +2372,13 @@ uint8_t BuildServCellCfgCommonSib(ServingCellConfigCommonSIB_t *srvCellCfg)
    ssbPosInBurst->bits_unused = 0;
 
    srvCellCfg->ssb_PeriodicityServingCell = convertSsbPeriodicityValueToEnumForSib(duSrvCellCfg.ssbPrdServingCell);
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   srvCellCfg->ss_PBCH_BlockPower = -25;
+#else
    srvCellCfg->ss_PBCH_BlockPower = duSrvCellCfg.ssPbchBlockPwr;
+#endif
+/* ======================================== */
 
    /* Downlink config common */
    ret = BuildDlCfgCommSib(&srvCellCfg->downlinkConfigCommon);
@@ -2425,7 +2469,13 @@ uint8_t BuildSib1Msg()
          break;
       }
 
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+      sib1Msg->cellSelectionInfo->q_RxLevMin = -65;
+#else
       sib1Msg->cellSelectionInfo->q_RxLevMin = -50;
+#endif
+/* ======================================== */
 
       DU_ALLOC(sib1Msg->cellSelectionInfo->q_RxLevMinSUL, sizeof(Q_RxLevMin_t));
       if(!sib1Msg->cellSelectionInfo->q_RxLevMinSUL)

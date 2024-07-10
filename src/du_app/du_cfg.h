@@ -39,7 +39,13 @@
 #endif
 
 #define F1_EGTP_PORT  2152  /* As per the spec 29.281, the registered port number for GTP-U is 2152 */
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+#define NR_PCI 0
+#else
 #define NR_PCI 1
+#endif
+/* ======================================== */
 #define NR_CELL_ID 1
 
 #define DU_NAME "ORAN OAM DU"
@@ -114,10 +120,22 @@
 #define NUM_RX_ANT 1 //  2 -> 1 -> 2 -> 1
 /* ======================================== */
 #define FREQ_SHIFT_7P5KHZ FALSE
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+#define SSB_PBCH_PWR -25
+#else
 #define SSB_PBCH_PWR 0
+#endif
+/* ======================================== */
 #define BCH_PAYLOAD PHY_GEN_TIMING_PBCH_BIT
 #define NORMAL_CYCLIC_PREFIX 0
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+#define OFFSET_TO_POINT_A 86                     /* PRB Offset to Point A OAI */
+#else 
 #define OFFSET_TO_POINT_A 24                     /* PRB Offset to Point A */
+#endif
+/* ======================================== */
 #define BETA_PSS BETA_PSS_0DB  
 #define SSB_PERIODICITY 20
 #define SSB_SUBCARRIER_OFFSET 0         
@@ -135,7 +153,11 @@
 #ifndef NR_TDD
 #define PRACH_CONFIG_IDX   16
 #else
-#define PRACH_CONFIG_IDX   88
+   #ifdef NFAPI
+      #define PRACH_CONFIG_IDX   98
+   #else
+      #define PRACH_CONFIG_IDX   88
+   #endif
 #endif
 #define PRACH_MAX_PRB  24  /* As per (spec 38.211-Table 6.3.3.2-1), max allocated PRBs can go upto 24 */
 #define PRACH_FREQ_START  (MAX_NUM_RB - PRACH_MAX_PRB) /* In order to allocate PRACH from end of the resource grid */
@@ -143,12 +165,22 @@
 #define PRACH_SUBCARRIER_SPACING NR_SCS
 #define PRACH_RESTRICTED_SET_CFG 0
 #define NUM_PRACH_FDM 1
-#define ROOT_SEQ_IDX 0
-#define NUM_ROOT_SEQ 1
-#define ZERO_CORRELATION_ZONE_CFG 4
+      #ifdef NFAPI
+         #define ROOT_SEQ_IDX 1
+         #define NUM_ROOT_SEQ 16
+         #define ZERO_CORRELATION_ZONE_CFG 13
+      #else
+         #define ROOT_SEQ_IDX 0
+         #define NUM_ROOT_SEQ 1
+         #define ZERO_CORRELATION_ZONE_CFG 4
+      #endif
 #define NUM_UNUSED_ROOT_SEQ 0
 #define UNUSED_ROOT_SEQ 1
+#ifdef NFAPI
+#define SSB_PER_RACH 3
+#else 
 #define SSB_PER_RACH 1
+#endif
 #define CB_PREAMBLE_PER_SSB 8
 #define PRACH_MULT_CARRIER_BAND FALSE
 #define PRACH_PREAMBLE_RCVD_TGT_PWR  -74   
@@ -189,8 +221,15 @@
 #define NUM_TIME_DOM_RSRC_ALLOC 2
 #define PDSCH_K0_CFG1  0
 #define PDSCH_K0_CFG2  1
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+#define PDSCH_START_SYMBOL  1
+#define PDSCH_LENGTH_SYMBOL 5
+#else
 #define PDSCH_START_SYMBOL  3
 #define PDSCH_LENGTH_SYMBOL 11
+#endif
+/* ======================================== */
 #define PDSCH_RES_ALLOC_TYPE       1          /* Resource allocation type */
 #define PDSCH_MAX_CODEWORD_SCH_BY_DCI 0       /* Max num of codewords scheduled by DCI */
 #define PDSCH_RBG_SIZE   0                    /* 0: config1 */
@@ -216,9 +255,9 @@
 
 /* MACRO defines for TDD DL-UL Configuration */
 #define NUM_DL_SLOTS 7
-#define NUM_DL_SYMBOLS 12 
+#define NUM_DL_SYMBOLS 6 
 #define NUM_UL_SLOTS 2
-#define NUM_UL_SYMBOLS 1
+#define NUM_UL_SYMBOLS 4
 #define GUARD_SLOT_IDX 7
 
 /* MACRO defines for SRC config */

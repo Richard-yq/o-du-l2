@@ -241,7 +241,13 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.ssbCfg.ssbPeriod = SSB_PRDCTY_MS_20;
    duCfgParam.macCellCfg.ssbCfg.ssbScOffset = SSB_SUBCARRIER_OFFSET;
 #endif
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   duCfgParam.macCellCfg.ssbCfg.ssbMask[0] = -2147483648; /*Use OAI ssb mask only one SSB is transmitted */
+#else
    duCfgParam.macCellCfg.ssbCfg.ssbMask[0] = 1; /* only one SSB is transmitted */
+#endif
+/* ======================================== */
    if(BuildMibPdu() != ROK)
    {
       DU_LOG("\nERROR  -->  Failed to build MIB PDU");
@@ -503,7 +509,13 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 #else
    srvCellCfgComm->dlCfg.dlScsCarrier.scsOffset = SSB_SUBCARRIER_OFFSET;
    srvCellCfgComm->dlCfg.dlScsCarrier.scs = NR_SCS;
+/* ======== small cell integration ======== */
+   #ifdef NFAPI
+   srvCellCfgComm->dlCfg.dlScsCarrier.scsBw = NR_SCS_BW;
+#else
    srvCellCfgComm->dlCfg.dlScsCarrier.scsBw = NR_BANDWIDTH;
+#endif
+/* ======================================== */
 #endif   
    srvCellCfgComm->dlCfg.locAndBw = FREQ_LOC_BW;
 
@@ -518,9 +530,17 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1;
    pdcchCfg.monitorSymbolsInSlot[0] = 128;
    pdcchCfg.monitorSymbolsInSlot[1] = 0;
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   pdcchCfg.numCandAggLvl1 = SearchSpace__nrofCandidates__aggregationLevel1_n0;
+   pdcchCfg.numCandAggLvl2 = SearchSpace__nrofCandidates__aggregationLevel2_n0;
+   pdcchCfg.numCandAggLvl4 = SearchSpace__nrofCandidates__aggregationLevel4_n1;
+#else
    pdcchCfg.numCandAggLvl1 = SearchSpace__nrofCandidates__aggregationLevel1_n8;
    pdcchCfg.numCandAggLvl2 = SearchSpace__nrofCandidates__aggregationLevel2_n4;
    pdcchCfg.numCandAggLvl4 = SearchSpace__nrofCandidates__aggregationLevel4_n2;
+#endif
+/* ======================================== */
    pdcchCfg.numCandAggLvl8 = SearchSpace__nrofCandidates__aggregationLevel8_n1;
    pdcchCfg.numCandAggLvl16 = SearchSpace__nrofCandidates__aggregationLevel16_n0;
    pdcchCfg.searchSpcType = SearchSpace__searchSpaceType_PR_common;
@@ -535,20 +555,44 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    pdschCfg.numTimeDomRsrcAlloc = 2;
    pdschCfg.timeDomAlloc[0].k0 = PDSCH_K0_CFG1;
    pdschCfg.timeDomAlloc[0].mapType = PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   pdschCfg.timeDomAlloc[0].sliv = 40;
+#else
    pdschCfg.timeDomAlloc[0].sliv = calcSliv(PDSCH_START_SYMBOL,PDSCH_LENGTH_SYMBOL);
+#endif
+/* ======================================== */
 
    pdschCfg.timeDomAlloc[1].k0 = PDSCH_K0_CFG2;
    pdschCfg.timeDomAlloc[1].mapType = PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   pdschCfg.timeDomAlloc[1].sliv = 54;
+#else
    pdschCfg.timeDomAlloc[1].sliv = calcSliv(PDSCH_START_SYMBOL,PDSCH_LENGTH_SYMBOL);
+#endif
+/* ======================================== */
 
    srvCellCfgComm->dlCfg.pdschCfg = pdschCfg;
 
    /* Configuring BCCH Config for SIB1 */
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   srvCellCfgComm->dlCfg.bcchCfg.modPrdCoeff = BCCH_Config__modificationPeriodCoeff_n2;
+#else
    srvCellCfgComm->dlCfg.bcchCfg.modPrdCoeff = BCCH_Config__modificationPeriodCoeff_n16;
+#endif
+/* ======================================== */
 
    /* Configuring PCCH Config for SIB1 */
    pcchCfg.dfltPagingCycle = convertPagingCycleEnumToValue(PagingCycle_rf256);
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   pcchCfg.nAndPagingFrmOffsetType = PCCH_Config__nAndPagingFrameOffset_PR_quarterT;
+#else
    pcchCfg.nAndPagingFrmOffsetType = PCCH_Config__nAndPagingFrameOffset_PR_oneT;
+#endif
+/* ======================================== */
    pcchCfg.pageFrameOffset = 0;
    pcchCfg.ns = convertNsEnumToValue(PCCH_Config__ns_one);
    pcchCfg.firstPDCCHMontioringType = PCCH_Config__firstPDCCH_MonitoringOccasionOfPO_PR_sCS30KHZoneT_SCS15KHZhalfT;
@@ -566,7 +610,14 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 #else
    srvCellCfgComm->ulCfg.ulScsCarrier.scsOffset = SSB_SUBCARRIER_OFFSET;
    srvCellCfgComm->ulCfg.ulScsCarrier.scs = NR_SCS;
+/* ======== small cell integration ======== */
+   #ifdef NFAPI
+   srvCellCfgComm->ulCfg.ulScsCarrier.scsBw = NR_SCS_BW;
+   #else
    srvCellCfgComm->ulCfg.ulScsCarrier.scsBw = NR_BANDWIDTH;
+   #endif
+/* ======================================== */
+
 #endif   
    srvCellCfgComm->ulCfg.freqBandInd = NR_FREQ_BAND;
    srvCellCfgComm->ulCfg.pMax = UL_P_MAX;
@@ -580,7 +631,13 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    rachCfg.msg1FreqStart = PRACH_FREQ_START;
    rachCfg.zeroCorrZoneCfg = ZERO_CORRELATION_ZONE_CFG;
    rachCfg.preambleRcvdTgtPwr = PRACH_PREAMBLE_RCVD_TGT_PWR;
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   rachCfg.preambleTransMax = RACH_ConfigGeneric__preambleTransMax_n10;
+#else
    rachCfg.preambleTransMax = RACH_ConfigGeneric__preambleTransMax_n200;
+#endif
+/* ======================================== */
    rachCfg.pwrRampingStep = RACH_ConfigGeneric__powerRampingStep_dB2;
    rachCfg.raRspWindow = RACH_ConfigGeneric__ra_ResponseWindow_sl10;
    rachCfg.numRaPreamble = NUM_RA_PREAMBLE;

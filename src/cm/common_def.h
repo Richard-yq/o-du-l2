@@ -104,16 +104,28 @@
 #define PUCCH_FORMAT_3 3 
 #define PUCCH_FORMAT_4 4
 
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+#define DEFAULT_MCS 5
+#else
 #define DEFAULT_MCS 4
+#endif
+/* ======================================== */
 
 #define BANDWIDTH_20MHZ 20
+#define BANDWIDTH_40MHZ 40 //OAI
 #define BANDWIDTH_100MHZ 100
 
 /* PRB allocation as per 38.101, Section 5.3.2 */
 #define TOTAL_PRB_20MHZ_MU0 106
+#define TOTAL_PRB_40MHZ_MU1 106 //OAI
 #define TOTAL_PRB_100MHZ_MU1 273
 #ifdef NR_TDD
-#define MAX_NUM_RB TOTAL_PRB_100MHZ_MU1  /* value for numerology 1, 100 MHz */
+   #ifdef NFAPI
+      #define MAX_NUM_RB TOTAL_PRB_100MHZ_MU1  /*//Use OSC 100MHz value for numerology 1, 100 MHz */
+   #else
+      #define MAX_NUM_RB TOTAL_PRB_100MHZ_MU1  /* value for numerology 1, 100 MHz */
+   #endif
 #else
 #define MAX_NUM_RB TOTAL_PRB_20MHZ_MU0 /* value for numerology 0, 20 MHz */
 #endif

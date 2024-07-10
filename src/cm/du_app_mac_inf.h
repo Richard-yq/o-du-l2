@@ -26,7 +26,13 @@
 #define NUM_SSB		1	/* max value is 64 */
 #define SSB_MASK_SIZE	1	/* SSB mask size is 32bit for sub6 */
 #define SIB1_REPETITION_PERIOD   20
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+#define CORESET_0_INDEX      12
+#else
 #define CORESET_0_INDEX      0
+#endif
+/* ======================================== */
 #define CORESET_1_INDEX      1
 #define CORESET_2_INDEX      2
 #define CORESET_3_INDEX      3
