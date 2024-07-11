@@ -31,6 +31,12 @@
 #include "mac_utils.h"
 #include "lwr_mac_phy.h"
 
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+#include "vnf.h"
+#endif
+/* ======================================== */
+
 uint8_t ssbPeriodicity[6] = {5, 10, 20, 40, 80, 160};
 
 uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg  *macCellCfg);
@@ -136,6 +142,34 @@ uint8_t SchSendCfgCfm(Pst *pst, RgMngmt  *cfm)
 
    return ROK;
 }
+
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+/**
+ * @brief Layer Manager VNF Configuration request handler.
+ *
+ * @details
+ *
+ *     Function : MacProcVnfCfgReq
+ *
+ *     This function handles the gNB and vnf configuration
+ *     request received from DU APP.
+ *     This API unapcks and forwards the config towards SCH
+ *
+ *  @param[in]  Pst           *pst
+ *  @param[in]  vnf_cfg_t     *nfapi_vnf_config
+ *  @return
+ *      -# ROK
+ **/
+uint8_t MacProcVnfCfgReq(Pst* pst, vnf_cfg_t *nfapi_vnf_config)
+{
+   DU_LOG("\nINFO  -->  [NFAPI] : Calling MacProcVnfCfgReq");
+   sendToLowerMac(VNF_START_CFG_REQUEST, 0, (void*)nfapi_vnf_config);
+
+   return ROK;
+}
+#endif //NFAPI
+/* ======================================== */
 
 /**
  * @brief Layer Manager Configuration request handler.
@@ -475,6 +509,17 @@ uint8_t MacProcSchCellCfgCfm(Pst *pst, SchCellCfgCfm *schCellCfgCfm)
 #ifdef INTEL_TIMER_MODE
       sendToLowerMac(UL_IQ_SAMPLE, 0, (void *)cellId);
 #else
+
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+      // Wait for PNF connection
+      extern PNF_Lock_t *pnf_state_lock;
+      while(!pnf_state_lock->flag){
+         DU_LOG("\n[Small Cell] The NFAPI flag is set to YES and waiting for PNF connection ...\n");
+         pthread_cond_wait( &(pnf_state_lock->cond), &(pnf_state_lock->mutex));
+      }
+#endif
+/* ========================================= */
       sendToLowerMac(CONFIG_REQUEST, 0, (void *)cellId);
 #endif
    }

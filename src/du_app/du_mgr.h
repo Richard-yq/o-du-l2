@@ -418,6 +418,13 @@ uint8_t duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
 uint8_t duBuildAndSendMacCellStart();
 uint8_t duBuildAndSendMacCellStop(uint16_t cellId);
 
+
+#ifdef NFAPI
+uint8_t duBuildAndSendMacVnfCfg();
+#endif // NFAPI
+
+
+
 #endif
 
 /**********************************************************************

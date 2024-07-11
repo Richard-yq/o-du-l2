@@ -65,6 +65,21 @@
 #include "TDD-UL-DL-ConfigCommon.h"
 #include "du_sys_info_hdl.h"
 
+
+/* ======== small cell integration ========*/
+#ifdef NFAPI
+#include "lwr_mac_fsm.h" // To store the du app fsm  
+#include "nfapi_vnf_interface.h"
+#include "nfapi_vnf.h"
+/*
+**************************************
+* The global variable definition
+**************************************
+*/
+vnf_cfg_t *nfapi_vnf_cfg;
+#endif
+/*******************************************/
+
 #ifdef O1_ENABLE
 #include "CmInterface.h"
 extern StartupConfig g_cfg;
@@ -118,7 +133,8 @@ uint8_t readMacCfg()
 #else
    duCfgParam.macCellCfg.cellId = NR_CELL_ID;
    duCfgParam.macCellCfg.carrCfg.dlBw = NR_BANDWIDTH;
-   duCfgParam.macCellCfg.carrCfg.arfcnDL  = NR_DL_ARFCN;
+   // duCfgParam.macCellCfg.carrCfg.arfcnDL  = NR_DL_ARFCN;
+   duCfgParam.macCellCfg.carrCfg.dlFreq = NR_DL_FREQ;
 #endif
    duCfgParam.macCellCfg.carrCfg.numTxAnt = NUM_TX_ANT;
    /* UL Carrier configuration */
@@ -127,9 +143,40 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.carrCfg.arfcnUL = cellParams.arfcnUL;
 #else   
    duCfgParam.macCellCfg.carrCfg.ulBw = NR_BANDWIDTH;
-   duCfgParam.macCellCfg.carrCfg.arfcnUL =  NR_UL_ARFCN;
+   // duCfgParam.macCellCfg.carrCfg.arfcnUL =  NR_UL_ARFCN;
+   duCfgParam.macCellCfg.carrCfg.ulFreq =  NR_UL_FREQ;
 #endif   
    duCfgParam.macCellCfg.carrCfg.numRxAnt = NUM_RX_ANT;
+
+  /* ======== small cell integration ======= */
+  #ifdef NFAPI
+   duCfgParam.macCellCfg.carrCfg.dlgridSize[0] = 106;
+   duCfgParam.macCellCfg.carrCfg.dlgridSize[1] = 1;
+   duCfgParam.macCellCfg.carrCfg.dlgridSize[2] = 1;
+   duCfgParam.macCellCfg.carrCfg.dlgridSize[3] = 1;
+   duCfgParam.macCellCfg.carrCfg.dlgridSize[4] = 1;
+   duCfgParam.macCellCfg.carrCfg.ulgridSize[0] = 106;
+   duCfgParam.macCellCfg.carrCfg.ulgridSize[1] = 1;
+   duCfgParam.macCellCfg.carrCfg.ulgridSize[2] = 1;
+   duCfgParam.macCellCfg.carrCfg.ulgridSize[3] = 1;
+   duCfgParam.macCellCfg.carrCfg.ulgridSize[4] = 1;
+  #endif
+  /* ======================================= */
+
+  /* ======== small cell integration ======= */
+  #ifdef NFAPI
+   duCfgParam.macCellCfg.carrCfg.ul_k0[0] = 0;
+   duCfgParam.macCellCfg.carrCfg.ul_k0[1] = 0;
+   duCfgParam.macCellCfg.carrCfg.ul_k0[2] = 0;
+   duCfgParam.macCellCfg.carrCfg.ul_k0[3] = 0;
+   duCfgParam.macCellCfg.carrCfg.ul_k0[4] = 0;
+   duCfgParam.macCellCfg.carrCfg.dl_k0[0] = 0;
+   duCfgParam.macCellCfg.carrCfg.dl_k0[1] = 0;
+   duCfgParam.macCellCfg.carrCfg.dl_k0[2] = 0;
+   duCfgParam.macCellCfg.carrCfg.dl_k0[3] = 0;
+   duCfgParam.macCellCfg.carrCfg.dl_k0[4] = 0;
+  #endif
+  /* ======================================= */
 
    /* Cell configuration */
 #ifdef O1_ENABLE
@@ -1049,6 +1096,84 @@ uint8_t readCfg()
 
    return ROK;
 }
+
+
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+/*******************************************************************
+ *
+ * @brief Configures the DU VNF Parameters
+ *
+ * @details
+ *
+ *    Function : readVnfCfg [small cell integration]
+ *
+ *    Functionality:
+ *       - Initializes the vnfcfg members.
+ *       - Fill MAC parameter in fixed value.
+ *      
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t readVnfCfg()
+{  
+   // nfapi_vnf_cfg = (vnf_cfg_t*) calloc(1, sizeof(vnf_cfg_t));
+   // nfapi_vnf_cfg->vnf = (vnf_info*) calloc(1, sizeof(vnf_info));
+   // nfapi_vnf_cfg->config = (nfapi_vnf_config_t*) calloc(1, sizeof(nfapi_vnf_config_t));
+
+   DU_LOG("\nDEBUG   --> In function: %s",__FUNCTION__);
+   DU_ALLOC_SHRABL_BUF(nfapi_vnf_cfg, sizeof(vnf_cfg_t));
+   DU_ALLOC_SHRABL_BUF(nfapi_vnf_cfg->vnf, sizeof(vnf_info));
+   DU_ALLOC_SHRABL_BUF(nfapi_vnf_cfg->config, sizeof(nfapi_vnf_config_t));
+
+   char* vnf_addr = "127.0.0.1";
+   int vnf_p5_port = 62324;
+   int vnf_p7_port = 50611;
+
+   // pending for struct vnf
+   nfapi_vnf_cfg->vnf->p7_vnfs[0].timing_window = 30;
+   nfapi_vnf_cfg->vnf->p7_vnfs[0].periodic_timing_enabled = 0;
+   nfapi_vnf_cfg->vnf->p7_vnfs[0].aperiodic_timing_enabled = 0;
+   nfapi_vnf_cfg->vnf->p7_vnfs[0].periodic_timing_period = 1; /*NTUST/nfapi-fixes/openairinterface5g/nfapi/oai_integration/nfapi_vnf.c*/
+   nfapi_vnf_cfg->vnf->p7_vnfs[0].config = nfapi_vnf_p7_config_create();
+   strcpy(nfapi_vnf_cfg->vnf->p7_vnfs[0].local_addr, vnf_addr);
+   nfapi_vnf_cfg->vnf->p7_vnfs[0].local_port = vnf_p7_port;
+   nfapi_vnf_cfg->vnf->p7_vnfs[0].mac = (mac_t*)malloc(sizeof(mac_t));
+
+   nfapi_vnf_cfg->config = nfapi_vnf_config_create();
+   nfapi_vnf_cfg->config->malloc = malloc;
+   nfapi_vnf_cfg->config->free = free;
+   nfapi_vnf_cfg->config->vnf_p5_port = vnf_p5_port;
+   nfapi_vnf_cfg->config->vnf_ipv4 = 1;
+   nfapi_vnf_cfg->config->vnf_ipv6 = 0;
+   nfapi_vnf_cfg->config->pnf_list = 0;
+   nfapi_vnf_cfg->config->phy_list = 0;
+
+   nfapi_vnf_cfg->config->pnf_nr_connection_indication = &pnf_nr_connection_indication_cb;
+   nfapi_vnf_cfg->config->pnf_disconnect_indication = &pnf_disconnection_indication_cb;
+   nfapi_vnf_cfg->config->pnf_nr_param_resp = &pnf_nr_param_resp_cb;
+   nfapi_vnf_cfg->config->pnf_nr_config_resp = &pnf_nr_config_resp_cb;
+   nfapi_vnf_cfg->config->pnf_nr_start_resp = &pnf_nr_start_resp_cb;
+
+   nfapi_vnf_cfg->config->nr_param_resp = &nr_param_resp_cb;
+   nfapi_vnf_cfg->config->nr_config_resp = &nr_config_resp_cb;
+   nfapi_vnf_cfg->config->nr_start_resp = &nr_start_resp_cb;
+   nfapi_vnf_cfg->config->intgr_nr_config_resp = &intgr_lwr_mac_procConfigRspEvt;
+   nfapi_vnf_cfg->config->intgr_nr_start_resp = &intgr_lwr_mac_procStartRspEvt;
+   nfapi_vnf_cfg->config->user_data = nfapi_vnf_cfg->vnf;
+
+
+
+   // config->codec_config.allocate = &vnf_allocate;
+   // config->codec_config.deallocate = &vnf_deallocate;
+   DU_LOG("\nINFO    --> [NFAPI] DU_APP: readVnfCfg() Completed");
+   return ROK;
+}
+#endif //NFAPI
+/* =========================================== */
 
 /*******************************************************************
  *
@@ -5566,6 +5691,58 @@ uint8_t duReadCfg()
    return ROK;
 }
 
+#ifdef NFAPI
+/*******************************************************************
+ *
+ * @brief Post VNF config req to du_app
+ *
+ * @details
+ *
+ *    Function : vnfCfgReq
+ *
+ *    Functionality:
+ *      - Calls readVnfCfg()
+ *      - Post task to du_app for further processing
+ *
+ * @params[in] void
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t vnfCfgReq(){
+   Pst pst;
+   Buffer* mBuf;
+
+   if(readVnfCfg() != ROK){
+      DU_LOG("\nERROR  -->  [NFAPI] DU_APP : Reading Vnf configuration failed");
+      return RFAILED;
+   }
+
+   // Fill the pst structure
+   memset(&(pst), 0, sizeof(Pst));
+   pst.srcEnt = (Ent)ENTDUAPP;
+   pst.srcInst = (Inst)DU_INST;
+   pst.srcProcId = DU_PROC;
+   pst.dstEnt = pst.srcEnt;
+   pst.dstInst = pst.srcInst;
+   pst.dstProcId = pst.srcProcId;
+   pst.event = EVT_VNF_CFG;
+   pst.selector = ODU_SELECTOR_TC;
+   pst.pool = DU_POOL;
+
+   if (ODU_GET_MSG_BUF(DFLT_REGION, DU_POOL, &mBuf) != ROK) {
+      DU_LOG("\nERROR  -->  DU_APP : Memory VNF allocation failed in vnfCfgReq");
+      return RFAILED;
+   }
+
+   if (ODU_POST_TASK(&pst, mBuf) != ROK) {
+      DU_LOG("\nERROR  -->  DU_APP : ODU_POST_TASK VNF failed in vnfCfgReq");
+      return RFAILED;
+   }
+   DU_LOG("\n\n******************FINISH VNF_CFG_REQ **************************\n\n");
+   return ROK;
+}
+#endif
 /*******************************************************************
  *
  * @brief Prints all DU Configuration

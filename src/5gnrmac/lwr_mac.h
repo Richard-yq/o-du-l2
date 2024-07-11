@@ -40,6 +40,20 @@ typedef enum
    MAX_STATE   
 }PhyState;
 
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+typedef enum
+{
+   PNF_STATE_IDLE,
+   PNF_STATE_CONFIGURED,
+   PNF_STATE_RUNNING,
+
+   PNF_MAX_STATE
+}PnfState;
+ #endif
+/* ======================================== */
+
+
 /* Events in Lower Mac */
 typedef enum{
 #ifdef INTEL_TIMER_MODE
@@ -51,6 +65,30 @@ typedef enum{
    CONFIG_RESPONSE,
    START_REQUEST,
    STOP_REQUEST,
+
+   /* ======== small cell integration ======== */
+#ifdef NFAPI
+/*
+* The gap between fapi function and nfapi function
+* parameter request  <--> pnf parameter request
+* parameter response <--> pnf parameter response
+* config request     <--> pnf config request
+* config response    <--> pnf config response
+* start request      <--> pnf start request
+* stop request       <--> pnf stop request
+*/ 
+#define GAP  7
+   VNF_START_CFG_REQUEST,
+   PNF_PARAM_REQUEST,
+   PNF_PARAM_RESPONSE,
+   PNF_CONFIG_REQUEST,
+   PNF_CONFIG_RESPONSE,
+   PNF_START_REQUEST,
+   PNF_STOP_REQUEST,
+   PNF_START_RESPONSE,
+#endif
+   /* ======================================== */
+
    MAX_EVENT
 }EventState;
 
@@ -71,6 +109,12 @@ typedef struct lwrMacGlobalCb
    uint8_t         numCell;  /* Number of Cells configured */
    PhyState        phyState;    /* State of PHY */
    EventState      event;       /* State of Event */
+   
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   PnfState       pnfState;
+#endif //NFAPI
+/* ======================================== */
 }LwrMacCb;
 
 typedef enum

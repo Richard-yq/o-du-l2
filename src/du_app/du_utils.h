@@ -42,6 +42,12 @@
 #define EVTSTARTPOLL  9
 #define EVENT_RIC_DATA  10
 
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+#define EVT_VNF_CFG     200
+#endif
+/********************************************/
+
 /* allocate and zero out a static buffer */
 
 #ifdef ODU_MEMORY_DEBUG_LOG

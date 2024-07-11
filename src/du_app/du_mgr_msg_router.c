@@ -424,6 +424,19 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                      ODU_PUT_MSG_BUF(mBuf);
                      break;
                   }
+                  
+#ifdef NFAPI
+               /* ========= small cell integration ======== */
+               case EVT_VNF_CFG:
+                  {
+                     DU_LOG("\n****** Received initial VNF configs at DU APP ******\n");
+                     duBuildAndSendMacVnfCfg();
+                     ODU_PUT_MSG_BUF(mBuf);
+                     break;
+
+                  }
+#endif
+
                default:
                   {
                      DU_LOG("\nERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTDUAPP");

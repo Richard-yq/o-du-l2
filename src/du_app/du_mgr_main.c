@@ -630,6 +630,7 @@ uint8_t commonInit()
    }
    ODU_SET_THREAD_AFFINITY(&sctp_stsk, SS_AFFINITY_MODE_EXCL, 25, 0);
 
+#ifndef NFAPI
    /* system task for lower-mac receiver thread */
    if(ODU_CREATE_TASK(PRIOR0, &lwr_mac_stsk) != ROK)
    {
@@ -637,6 +638,7 @@ uint8_t commonInit()
       return RFAILED;
    }
    ODU_SET_THREAD_AFFINITY(&lwr_mac_stsk, SS_AFFINITY_MODE_EXCL, 21, 0);
+#endif // No NFAPI
 
 #ifndef INTEL_WLS_MEM
    /* system task for phy stub's slot indication generator thread */
@@ -685,11 +687,15 @@ uint8_t commonInit()
       return RFAILED;
    }
 
+/* ======== small cell integration ======== */
+#ifndef NFAPI 
    if(lwrMacInit(lwr_mac_stsk) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : Lower MAC Tapa Task initialization failed");
       return RFAILED;
    }
+#endif
+/* ======================================== */
 
 #ifndef INTEL_WLS_MEM
    if(phyStubInit(phy_stub_slot_ind_stsk) != ROK)
@@ -764,6 +770,12 @@ uint8_t tst(void)
    {
       return RFAILED;
    } 
+
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+    vnfCfgReq();
+#endif
+/* ======================================== */
 
    //Read all the configs from du_utils.c into duCfgParams
 #ifndef O1_ENABLE

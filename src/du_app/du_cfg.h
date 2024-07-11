@@ -31,7 +31,7 @@
 
 #ifndef O1_ENABLE
 #define DU_IP_V4_ADDR "192.168.130.81"
-#define CU_IP_V4_ADDR "192.168.130.82"
+#define CU_IP_V4_ADDR "192.168.130.83" //CU_stub:192.168.130.82
 #define RIC_IP_V4_ADDR "192.168.130.80"
 
 #define F1_SCTP_PORT 38472  /* As per the spec 38.472, the registered port number for F1AP is 38472 */
@@ -46,29 +46,59 @@
 #define CELL_TYPE SMALL
 
 //TODO: while testing for TDD, Mu1 and 100 MHz, this flag must be enabled
-#ifdef NR_TDD
-#define DUPLEX_MODE DUP_MODE_TDD
-#define NR_DL_ARFCN 623400
-#define NR_UL_ARFCN 623400
-#define NR_FREQ_BAND 78
-#define NR_SCS SCS_30KHZ
-#define NR_BANDWIDTH BANDWIDTH_100MHZ
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   #ifdef NR_TDD
+      // For band 78 TDD
+      #define DUPLEX_MODE DUP_MODE_TDD
+      #define NR_NUMEROLOGY 1
+      #define NR_DL_ARFCN 623400 //OAI 640008
+      #define NR_UL_ARFCN 623400 //OAI 640008
+      #define NR_FREQ_BAND 78
+      #define NR_SCS SCS_30KHZ
+      #define NR_SCS_BW 106
+      #define NR_BANDWIDTH BANDWIDTH_100MHZ //Use OSC 100MHz
+      #define NR_DL_FREQ 3600120 //kHz
+      #define NR_UL_FREQ 3600120 //kHz
+   #else
+      // For band 66 FDD
+      #define DUPLEX_MODE DUP_MODE_FDD
+      #define NR_NUMEROLOGY 1
+      #define NR_DL_ARFCN 432000 //2160000kHz
+      #define NR_UL_ARFCN 352000 //1760000kHz
+      #define NR_FREQ_BAND 66 
+      #define NR_SCS SCS_30KHZ
+      #define NR_SCS_BW 106
+      #define NR_BANDWIDTH BANDWIDTH_20MHZ
+      #define NR_DL_FREQ 2160000 //kHz
+      #define NR_UL_FREQ 1760000 //kHz
+   #endif
 #else
-#define DUPLEX_MODE DUP_MODE_FDD
-#define NR_DL_ARFCN 428000
-#define NR_UL_ARFCN 390000
-#define NR_FREQ_BAND 1
-#define NR_SCS SCS_15KHZ
-#define NR_BANDWIDTH BANDWIDTH_20MHZ
+   #ifdef NR_TDD
+      #define DUPLEX_MODE DUP_MODE_TDD
+      #define NR_DL_ARFCN 623400
+      #define NR_UL_ARFCN 623400
+      #define NR_FREQ_BAND 78
+      #define NR_SCS SCS_30KHZ
+      #define NR_BANDWIDTH BANDWIDTH_100MHZ
+   #else
+      #define DUPLEX_MODE DUP_MODE_FDD
+      #define NR_DL_ARFCN 428000
+      #define NR_UL_ARFCN 390000
+      #define NR_FREQ_BAND 1
+      #define NR_SCS SCS_15KHZ
+      #define NR_BANDWIDTH BANDWIDTH_20MHZ
+   #endif
 #endif
+/* ======================================== */
 
 #define TRANS_ID 1
 #define DU_TAC 1
-#define PLMN_MCC0 3
-#define PLMN_MCC1 1
-#define PLMN_MCC2 1
-#define PLMN_MNC0 4
-#define PLMN_MNC1 8
+#define PLMN_MCC0 4
+#define PLMN_MCC1 6
+#define PLMN_MCC2 6
+#define PLMN_MNC0 9
+#define PLMN_MNC1 2
 #define PLMN_MNC2 0
 #define PLMN_SIZE 3
 
@@ -79,8 +109,10 @@
 #define TIME_CFG 4
 #define MEAS_TIMING_ARFCN 630432
 #define CARRIER_IDX 1
-#define NUM_TX_ANT 2
-#define NUM_RX_ANT 2
+/* ======== small cell integration ======== */
+#define NUM_TX_ANT 1 //  2 -> 1 -> 2 -> 1
+#define NUM_RX_ANT 1 //  2 -> 1 -> 2 -> 1
+/* ======================================== */
 #define FREQ_SHIFT_7P5KHZ FALSE
 #define SSB_PBCH_PWR 0
 #define BCH_PAYLOAD PHY_GEN_TIMING_PBCH_BIT
@@ -1309,6 +1341,14 @@ uint8_t fillDuSrvdCellSysInfo(F1DuSysInfo *sysInfo);
 
 uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol);
 uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicyList rrmPolicy[], uint8_t policyNum, MacSliceCfgReq *tempSliceCfg);
+
+/* ========  small cell integration  ======== */
+#ifdef NFAPI // Enable nFAPI interface
+#include "nfapi_vnf_interface.h"
+uint8_t vnfCfgReq();
+uint8_t readVnfCfg();
+#endif
+/***********************************************/
 
 #endif /* __DU_CONFIG_H__ */
 

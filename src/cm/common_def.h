@@ -53,6 +53,9 @@
 #include "cm_lib.x"
 #include "du_log.h"
 
+// SCF integration headers
+#include "../nfapi/open-nFAPI/nfapi/public_inc/nfapi_nr_interface_scf.h"
+
 #define SCH_INST_START 1
 #define SCH_MAX_INST 1
 
@@ -61,7 +64,7 @@
 #define MAX_NUM_CELL 2 /* Changed to 2 to support cell Id 2 even if there is only one cell in DU */
 #define MAX_NUM_MU   4
 #define MAX_NUM_UE   3
-#define MAX_NUM_UE_PER_TTI 2
+#define MAX_NUM_UE_PER_TTI 1 //I-release is 2
 #define MAX_NUM_LC   MAX_DRB_LCID + 1   /*Spec 38.331: Sec 6.4: maxLC-ID Keyword*/
 #define MAX_NUM_SRB  3    /* Max. no of Srbs */
 #define MAX_NUM_DRB  29   /* spec 38.331, maxDRB */
@@ -342,6 +345,45 @@ typedef enum
    PRINT,
    TRAVERSE_ALL
 }ActionTypeLL;
+
+//-------------------------------------------
+// SCF integrayion
+
+typedef uint16_t module_id_t;
+typedef uint32_t frame_t;
+typedef uint32_t slot_t;
+
+typedef struct {
+  /// Module ID
+  module_id_t module_id;
+  /// CC ID
+  int CC_id;
+  /// frame
+  frame_t frame;
+  /// slot
+  slot_t slot;
+
+  uint16_t cellId;
+
+  /// crc indication list
+  nfapi_nr_crc_indication_t crc_ind;
+
+  /// RACH indication list
+  nfapi_nr_rach_indication_t rach_ind;
+
+  /// SRS indication list
+  nfapi_nr_srs_indication_t srs_ind;
+
+  /// RX indication
+  nfapi_nr_rx_data_indication_t rx_ind;
+
+  /// UCI indication
+  nfapi_nr_uci_indication_t uci_ind;
+
+} NR_UL_IND_t;
+// --------------------------------------------
+
+NR_UL_IND_t UL_INFO;
 
 typedef struct slotTimingInfo
 {

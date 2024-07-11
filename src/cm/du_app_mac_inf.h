@@ -97,6 +97,13 @@
 #define EVENT_MAC_STATISTICS_MODIFY_REQ     234
 #define EVENT_MAC_STATISTICS_MODIFY_RSP     235
 
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+#include "nfapi_vnf_interface.h"
+#define EVENT_MAC_VNF_CONFIG_REQ     255 // A Largest number for now
+#endif // NFAPI
+/* ======================================== */
+
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
 #define BSR_SR_DELAY_TMR_2560 2560
@@ -610,12 +617,18 @@ typedef struct failureCause
 
 typedef struct carrierCfg
 {
-   uint32_t   dlBw;                   /* DL bandwidth */
-   uint32_t   arfcnDL;                 /* Absolute frequency Number of DL */
-   uint32_t   ulBw;                   /* UL bandwidth */
-   uint32_t   arfcnUL;                 /* Absolute frequency Number of UL */
-   uint16_t   numTxAnt;               /* Number of Tx antennas */
-   uint16_t   numRxAnt;               /* Number of Rx antennas */
+   uint32_t   dlBw;                          /* DL bandwidth */
+   uint32_t   arfcnDL;                 /* Absolute frequency Number of DL */   
+   uint32_t   dlFreq;                        /* Absolute frequency of DL point A in KHz */
+   uint32_t   ulBw;                          /* UL bandwidth */
+   uint32_t   arfcnUL;                 /* Absolute frequency Number of UL */   
+   uint32_t   ulFreq;                        /* Absolute frequency of UL point A in KHz */
+   uint16_t   dlgridSize[NUM_NUMEROLOGY];    /* DL Grid size for each numerologies */
+   uint16_t   ulgridSize[NUM_NUMEROLOGY];    /* UL Grid size for each numerologies */   
+   uint16_t   dl_k0[NUM_NUMEROLOGY];         //𝑘_{0}^{𝜇} for each of the numerologies [38.211, sec 5.3.1] Value: 0 ->23699   
+   uint16_t   ul_k0[NUM_NUMEROLOGY];         //𝑘0 𝜇 for each of the numerologies [38.211, sec 5.3.1] Value: : 0 ->23699
+   uint32_t   numTxAnt;                      /* Number of Tx antennas */
+   uint32_t   numRxAnt;                      /* Number of Rx antennas */
 }CarrierCfg;
 
 typedef enum
@@ -2103,6 +2116,22 @@ typedef uint8_t (*MacDuStatsIndFunc) ARGS((
       Pst *pst,
       MacStatsInd *statsInd));
 
+
+/* ======== small cell integration ========*/
+#ifdef NFAPI
+#include "type_def.h"
+/* Functions pointers for packing macvnfCfg Request */
+typedef uint8_t (*packMacVnfCfgReq) ARGS((
+	   Pst *pst,
+	   vnf_cfg_t *vnf_config ));
+
+typedef uint8_t (*DuMacVnfCfgReq) ARGS((
+	   Pst *pst,        
+	   vnf_cfg_t *vnf_config));
+
+#endif
+/* ======================================== */
+
 /* Statitics Delete Request from DU APP to MAC */
 typedef uint8_t (*DuMacStatsDeleteReqFunc) ARGS((
          Pst *pst,
@@ -2255,6 +2284,16 @@ uint8_t unpackDuMacStatsRsp(MacDuStatsRspFunc func, Pst *pst, Buffer *mBuf);
 uint8_t packDuMacStatsInd(Pst *pst, MacStatsInd *statsRsp);
 uint8_t DuProcMacStatsInd(Pst *pst, MacStatsInd *statsRsp);
 uint8_t unpackDuMacStatsInd(MacDuStatsIndFunc func, Pst *pst, Buffer *mBuf);
+
+
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+uint8_t packMacVnfCfg(Pst* pst, vnf_cfg_t* vnf_config);
+uint8_t unpackDuMacVnfCfg(DuMacVnfCfgReq func, Pst* pst, Buffer* mBuf);
+uint8_t MacProcVnfCfgReq(Pst* pst, vnf_cfg_t* vnf_config);
+#endif
+/* ======================================== */
+
 
 uint8_t packDuMacStatsDeleteReq(Pst *pst, MacStatsDeleteReq *statsDeleteReq);
 uint8_t MacProcStatsDeleteReq(Pst *pst, MacStatsDeleteReq *statsDeleteReq);

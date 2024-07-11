@@ -72,6 +72,26 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
 uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo);
 typedef uint8_t (*lwrMacFsmHdlr)(void *);
 void lwrMacLayerInit(Region region, Pool pool);
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+uint16_t OAI_OSC_fillDlTtiReq(SlotTimingInfo currTimingInfo);
+#endif
+/* ======================================== */
+
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+uint8_t intgr_lwr_mac_procPhyStartEvt(void* msg);
+uint8_t intgr_lwr_mac_procVnfCfgStartEvt(void *msg);
+uint8_t intgr_lwr_mac_procPNFParamReqEvt(void *msg);
+uint8_t intgr_lwr_mac_procPNFParamRspEvt(void *msg);
+uint8_t intgr_lwr_mac_procPNFConfigReqEvt(void *msg);
+uint8_t intgr_lwr_mac_procPNFConfigRspEvt(void *msg);
+uint8_t intgr_lwr_mac_procPNFStartReqEvt(void *msg);
+uint8_t intgr_lwr_mac_procPNFStartRspEvt(void *msg);
+uint8_t intgr_lwr_mac_procConfigRspEvt(uint32_t msgLen, void *msg);
+uint8_t intgr_lwr_mac_procStartRspEvt(uint32_t msgLen, void *msg);
+#endif
+/* ======================================== */
 
 #endif
 

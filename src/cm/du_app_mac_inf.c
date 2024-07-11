@@ -19,6 +19,90 @@
 #include "common_def.h"
 #include "du_app_mac_inf.h"
 
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+/**************************************************************************
+ * @brief Function to pack Loose Coupled
+ *        MAC VNF config parameters required by MAC
+ *
+ * @details
+ *
+ *      Function : packMacVnfCfg
+ *
+ *      Functionality:
+ *           packs the macVnfCfg parameters
+ *
+ * @param[in] Pst     *pst, Post structure of the primitive.
+ * @param[in] MacCellCfg  *macCellCfg, mac cell config parameters.
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ***************************************************************************/
+uint8_t packMacVnfCfg(Pst* pst, vnf_cfg_t* vnf_config) 
+{
+   /* we are now implemented only light wieght lossely coupled interface */
+  if (pst->selector == ODU_SELECTOR_LC) return RFAILED;  
+  else if (pst->selector == ODU_SELECTOR_LWLC) {
+    Buffer* mBuf = NULLP;
+
+    if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) return RFAILED;
+    else if (pst->selector == ODU_SELECTOR_LWLC){
+        Buffer* mBuf = NULLP;
+
+        if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) return RFAILED;
+
+        /* pack the address of the structure */
+        CMCHKPK(oduPackPointer, (PTR)vnf_config, mBuf);
+
+        DU_LOG("\nDEBUG  -->  DU_APP : MAC VNF config sent");
+        return ODU_POST_TASK(pst, mBuf);
+    }
+    return ROK;
+   }
+}
+
+/**************************************************************************
+ * @brief Function to pack Loose Coupled
+ *        MAC vnf config parameters required by MAC
+ *
+ * @details
+ *
+ *      Function : unpackDuMacVnfCfg
+ *
+ *      Functionality:
+ *           packs the macVnfCfg parameters
+ *
+ * @param[in] DuMacVnfCfgReq func; function pointer
+ * @param[in] Pst     *pst, Post structure of the primitive.
+ * @param[in] Buffer *mBuf
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ***************************************************************************/
+uint8_t unpackDuMacVnfCfg(DuMacVnfCfgReq func, Pst* pst, Buffer* mBuf)
+{
+    uint16_t ret = ROK;
+    vnf_cfg_t* vnf_config;
+
+    if (pst->selector == ODU_SELECTOR_LWLC)
+    {
+        /* unpack the address of the structure */
+        CMCHKUNPK(oduUnpackPointer, (PTR*)&vnf_config, mBuf);
+        ret = (*func)(pst, vnf_config);
+    }
+    else
+    {
+        /* only LWLC is implemented now */
+        ret = ROK;
+    }
+
+    return ret;
+}
+
+
+#endif
+/* ========================================= */
+
 /**************************************************************************
  * @brief Function to pack Loose Coupled 
  *        MAC cell config parameters required by MAC

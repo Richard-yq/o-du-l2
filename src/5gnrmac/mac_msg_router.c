@@ -95,6 +95,17 @@ void MacHdlDuappEvents(Pst *pst, Buffer *mBuf)
          cmUnpkLrgStsReq(RgMiLrgStsReq, pst, mBuf);
          break;
 #endif /* LCRGMILRG */
+
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+      case EVENT_MAC_VNF_CONFIG_REQ:
+         {
+            /* Process VNF Start Event */
+            unpackDuMacVnfCfg(MacProcVnfCfgReq, pst, mBuf);
+            break;
+         }
+#endif //NFAPI
+/* ========================================= */
       case EVENT_MAC_CELL_CONFIG_REQ:
          {
             /* Process MAC cell config */
