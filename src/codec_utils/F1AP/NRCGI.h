@@ -12,7 +12,7 @@
 #include <asn_application.h>
 
 /* Including external dependencies */
-#include "PLMN-Identity.h"
+#include "PLMN-IdentityF1AP.h"
 #include "NRCellIdentity.h"
 #include <constr_SEQUENCE.h>
 
@@ -25,7 +25,7 @@ struct ProtocolExtensionContainer;
 
 /* NRCGI */
 typedef struct NRCGI {
-	PLMN_Identity_t	 pLMN_Identity;
+	PLMN_IdentityF1AP_t	 pLMN_Identity;
 	NRCellIdentity_t	 nRCellIdentity;
 	struct ProtocolExtensionContainer	*iE_Extensions;	/* OPTIONAL */
 	/*

@@ -123,7 +123,7 @@
 #include "RAT-FrequencyPriorityInformation.h"
 #include "RRCContainer.h"
 #include "MaskedIMEISV.h"
-#include "PLMN-Identity.h"
+#include "PLMN-IdentityF1AP.h"
 #include "BitRate.h"
 #include "RRCDeliveryStatusRequest.h"
 #include "ResourceCoordinationTransferInformation.h"
@@ -2249,7 +2249,7 @@ typedef struct UEContextSetupRequestIEs {
 			RAT_FrequencyPriorityInformation_t	 RAT_FrequencyPriorityInformation;
 			RRCContainer_t	 RRCContainer;
 			MaskedIMEISV_t	 MaskedIMEISV;
-			PLMN_Identity_t	 PLMN_Identity;
+			PLMN_IdentityF1AP_t	 PLMN_IdentityF1AP;
 			BitRate_t	 BitRate;
 			RRCDeliveryStatusRequest_t	 RRCDeliveryStatusRequest;
 			ResourceCoordinationTransferInformation_t	 ResourceCoordinationTransferInformation;

@@ -233,7 +233,7 @@ T_PollRetransmit_t covertPollRetxTmrValueToEnum(uint16_t pollRetxTmr)
          case 800:
             return T_PollRetransmit_ms800;
          default:
-            return T_PollRetransmit_spare5;
+            return T_PollRetransmit_ms1_v1610;
       }
    }
 }
@@ -1645,52 +1645,52 @@ uint16_t convertShortDrxCycleLengthEnumToValue(e_ShortDRXCycleLength shortDrxCyc
  * @return enum value of long drx cycle
  *
  * **********************************************************************/
-enum DRX_ConfigRrc__drx_LongCycleStartOffset_PR convertLongDrxCycleLengthValueToEnum(uint16_t longDrxCycleLength)
+enum DRX_Config__drx_LongCycleStartOffset_PR convertLongDrxCycleLengthValueToEnum(uint16_t longDrxCycleLength)
 {
    switch(longDrxCycleLength)
    {
       case 10:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms10;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms10;
       case 20:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms20;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms20;
       case 32:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms32;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms32;
       case 40:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms40;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms40;
       case 60:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms60;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms60;
       case 64:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms64;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms64;
       case 70:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms70;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms70;
       case 80:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms80;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms80;
       case 128:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms128;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms128;
       case 160:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms160;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms160;
       case 256:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms256;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms256;
       case 320:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms320;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms320;
       case 512:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms512;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms512;
       case 640:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms640;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms640;
       case 1024:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms1024;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms1024;
       case 1280:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms1280;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms1280;
       case 2048:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms2048;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms2048;
       case 2560:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms2560;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms2560;
       case 5120:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms5120;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms5120;
       case 10240:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms10240;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms10240;
       default:
-         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms20;
+         return DRX_Config__drx_LongCycleStartOffset_PR_ms20;
    }
 }
 /************************************************************************
@@ -1708,58 +1708,58 @@ enum DRX_ConfigRrc__drx_LongCycleStartOffset_PR convertLongDrxCycleLengthValueTo
  * @return enum value of short drx cycle
  *
  * **********************************************************************/
-e_DRX_ConfigRrc__shortDRX__drx_ShortCycle convertShortDrxCycleLengthValueToEnum(uint16_t shortDrxCycleLength)
+e_DRX_Config__shortDRX__drx_ShortCycle convertShortDrxCycleLengthValueToEnum(uint16_t shortDrxCycleLength)
 {
    switch(shortDrxCycleLength)
    {
       case 2:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms2;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms2;
       case 3:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms3;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms3;
       case 4:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms4;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms4;
       case 5:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms5;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms5;
       case 6:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms6;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms6;
       case 7:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms7;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms7;
       case 8:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms8;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms8;
       case 10:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms10;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms10;
       case 14:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms14;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms14;
       case 16:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms16;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms16;
       case 20:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms20;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms20;
       case 30:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms30;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms30;
       case 32:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms32;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms32;
       case 35:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms35;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms35;
       case 40:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms40;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms40;
       case 64:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms64;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms64;
       case 80:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms80;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms80;
       case 128:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms128;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms128;
       case 160:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms160;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms160;
       case 256:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms256;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms256;
       case 320:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms320;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms320;
       case 512:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms512;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms512;
       case 640:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms640;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms640;
       default:
-         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms2;
+         return DRX_Config__shortDRX__drx_ShortCycle_ms2;
    }
 }
 /************************************************************************
@@ -1777,60 +1777,60 @@ e_DRX_ConfigRrc__shortDRX__drx_ShortCycle convertShortDrxCycleLengthValueToEnum(
  * @return enum value of onDurationTimer in milliSeconds 
  *
  * **********************************************************************/
-e_DRX_ConfigRrc__drx_onDurationTimer__milliSeconds convertOnDurationTimerMilliSecondsValueToEnum(uint16_t ondurationTime)
+e_DRX_Config__drx_onDurationTimer__milliSeconds convertOnDurationTimerMilliSecondsValueToEnum(uint16_t ondurationTime)
 {
    switch(ondurationTime)
    {
       case 1:
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms1;
       case 2: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms2;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms2;
       case 3:                                                    
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms3;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms3;
       case 4:                                                    
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms4;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms4;
       case 5:                                                    
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms5;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms5;
       case 6:                                                    
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms6;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms6;
       case 8:                                                    
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms8;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms8;
       case 10:                                                    
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms10;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms10;
       case 20: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms20;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms20;
       case 30: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms30;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms30;
       case 40: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms40;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms40;
       case 50: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms50;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms50;
       case 60: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms60;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms60;
       case 80: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms80;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms80;
       case 100: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms100;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms100;
       case 200: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms200;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms200;
       case 300: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms300;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms300;
       case 400: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms400;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms400;
       case 500: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms500;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms500;
       case 600: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms600;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms600;
       case 800: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms800;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms800;
       case 1000: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1000;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms1000;
       case 1200: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1200;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms1200;
       case 1600: 
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1600;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms1600;
       default:
-         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1;
+         return DRX_Config__drx_onDurationTimer__milliSeconds_ms1;
    }
 }
 
@@ -1845,61 +1845,61 @@ e_DRX_ConfigRrc__drx_onDurationTimer__milliSeconds convertOnDurationTimerMilliSe
  *    Functionality: As per Spec 38.331,
  *         Converts enum value of ondurationTime to actual value
  *
- * @params[in] e_DRX_ConfigRrc__drx_onDurationTimer__milliSeconds ondurationTime
+ * @params[in] e_DRX_Config__drx_onDurationTimer__milliSeconds ondurationTime
  * @return actual value of onDurationTimer in milliSeconds
  *
  * **********************************************************************/
-uint16_t convertOnDurationTimerMilliSecondsEnumToValue(e_DRX_ConfigRrc__drx_onDurationTimer__milliSeconds ondurationTime)
+uint16_t convertOnDurationTimerMilliSecondsEnumToValue(e_DRX_Config__drx_onDurationTimer__milliSeconds ondurationTime)
 {
    switch(ondurationTime)
    {
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms1:
          return 1;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms2:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms2:
          return 2;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms3:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms3:
          return 3;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms4:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms4:
          return 4;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms5:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms5:
          return 5;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms6:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms6:
          return 6;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms8:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms8:
          return 8;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms10:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms10:
          return 10;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms20:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms20:
          return 20;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms30:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms30:
          return 30;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms40:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms40:
          return 40;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms50:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms50:
          return 50;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms60:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms60:
          return 60;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms80:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms80:
          return 80;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms100:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms100:
          return 100;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms200:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms200:
          return 200;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms300:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms300:
          return 300;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms400:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms400:
          return 400;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms500:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms500:
          return 500;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms600:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms600:
          return 600;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms800:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms800:
          return 800;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1000:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms1000:
          return 1000;
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1200:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms1200:
          return 1200; 
-      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1600:
+      case DRX_Config__drx_onDurationTimer__milliSeconds_ms1600:
          return 1600;
       default:
          return 1;
@@ -1921,46 +1921,46 @@ uint16_t convertOnDurationTimerMilliSecondsEnumToValue(e_DRX_ConfigRrc__drx_onDu
  * @return enum value of drx RetransmissionTimerUL
  *
  * **********************************************************************/
-e_DRX_ConfigRrc__drx_RetransmissionTimerUL convertDrxRetransmissionTimerUlValueToEnum(uint16_t retransmissionTimerUL)
+e_DRX_Config__drx_RetransmissionTimerUL convertDrxRetransmissionTimerUlValueToEnum(uint16_t retransmissionTimerUL)
 {
    switch(retransmissionTimerUL)
    {
       case 0: 
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl0;
+         return DRX_Config__drx_RetransmissionTimerUL_sl0;
       case 1:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl1;
+         return DRX_Config__drx_RetransmissionTimerUL_sl1;
       case 2:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl2;
+         return DRX_Config__drx_RetransmissionTimerUL_sl2;
       case 4:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl4;
+         return DRX_Config__drx_RetransmissionTimerUL_sl4;
       case 6:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl6;
+         return DRX_Config__drx_RetransmissionTimerUL_sl6;
       case 8:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl8;
+         return DRX_Config__drx_RetransmissionTimerUL_sl8;
       case 16:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl16;
+         return DRX_Config__drx_RetransmissionTimerUL_sl16;
       case 24:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl24;
+         return DRX_Config__drx_RetransmissionTimerUL_sl24;
       case 33:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl33;
+         return DRX_Config__drx_RetransmissionTimerUL_sl33;
       case 40:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl40;
+         return DRX_Config__drx_RetransmissionTimerUL_sl40;
       case 64:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl64;
+         return DRX_Config__drx_RetransmissionTimerUL_sl64;
       case 80:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl80;
+         return DRX_Config__drx_RetransmissionTimerUL_sl80;
       case 96:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl96;
+         return DRX_Config__drx_RetransmissionTimerUL_sl96;
       case 112:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl112;
+         return DRX_Config__drx_RetransmissionTimerUL_sl112;
       case 128:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl128;
+         return DRX_Config__drx_RetransmissionTimerUL_sl128;
       case 160:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl160;
+         return DRX_Config__drx_RetransmissionTimerUL_sl160;
       case 320:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl320;
+         return DRX_Config__drx_RetransmissionTimerUL_sl320;
       default:
-         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl4;
+         return DRX_Config__drx_RetransmissionTimerUL_sl4;
    }
 }
 
@@ -1975,48 +1975,48 @@ e_DRX_ConfigRrc__drx_RetransmissionTimerUL convertDrxRetransmissionTimerUlValueT
  *    Functionality: As per Spec 38.331,
  *         Converts enum value drx RetransmissionTimerUL to actual value
  *
- * @params[in] e_DRX_ConfigRrc__drx_RetransmissionTimerUL retransmissionTimerUL
+ * @params[in] e_DRX_Config__drx_RetransmissionTimerUL retransmissionTimerUL
  * @return actual value of drx RetransmissionTimerUL
  *
  * **********************************************************************/
-uint16_t convertDrxRetransmissionTimerUlEnumToValue(e_DRX_ConfigRrc__drx_RetransmissionTimerUL retransmissionTimerUL)
+uint16_t convertDrxRetransmissionTimerUlEnumToValue(e_DRX_Config__drx_RetransmissionTimerUL retransmissionTimerUL)
 {
    switch(retransmissionTimerUL)
    {
 
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl0:
+      case DRX_Config__drx_RetransmissionTimerUL_sl0:
          return 0;
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl1:
+      case DRX_Config__drx_RetransmissionTimerUL_sl1:
          return 1;
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl2:
+      case DRX_Config__drx_RetransmissionTimerUL_sl2:
          return 2;
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl4:
+      case DRX_Config__drx_RetransmissionTimerUL_sl4:
          return 4;
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl6:
+      case DRX_Config__drx_RetransmissionTimerUL_sl6:
          return 6;
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl8:
+      case DRX_Config__drx_RetransmissionTimerUL_sl8:
          return 8;
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl16:
+      case DRX_Config__drx_RetransmissionTimerUL_sl16:
          return 16;
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl24:
+      case DRX_Config__drx_RetransmissionTimerUL_sl24:
          return 24;
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl33:
+      case DRX_Config__drx_RetransmissionTimerUL_sl33:
          return 33;
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl40:
+      case DRX_Config__drx_RetransmissionTimerUL_sl40:
          return 40;
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl64:
+      case DRX_Config__drx_RetransmissionTimerUL_sl64:
          return 64;
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl80:
+      case DRX_Config__drx_RetransmissionTimerUL_sl80:
          return 80;
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl96:
+      case DRX_Config__drx_RetransmissionTimerUL_sl96:
          return 96;
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl112:
+      case DRX_Config__drx_RetransmissionTimerUL_sl112:
          return 112;
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl128:
+      case DRX_Config__drx_RetransmissionTimerUL_sl128:
          return 128;
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl160:
+      case DRX_Config__drx_RetransmissionTimerUL_sl160:
          return 160;
-      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl320:
+      case DRX_Config__drx_RetransmissionTimerUL_sl320:
          return 320;
       default:
          return 4;
@@ -2038,46 +2038,46 @@ uint16_t convertDrxRetransmissionTimerUlEnumToValue(e_DRX_ConfigRrc__drx_Retrans
  * @return enum value of drx RetransmissionTimerDL
  *
  * **********************************************************************/
-e_DRX_ConfigRrc__drx_RetransmissionTimerDL convertDrxRetransmissionTimerDlValueToEnum(uint16_t retransmissionTimerDL)
+e_DRX_Config__drx_RetransmissionTimerDL convertDrxRetransmissionTimerDlValueToEnum(uint16_t retransmissionTimerDL)
 {
    switch(retransmissionTimerDL)
    {
       case 0: 
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl0;
+         return DRX_Config__drx_RetransmissionTimerDL_sl0;
       case 1:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl1;
+         return DRX_Config__drx_RetransmissionTimerDL_sl1;
       case 2:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl2;
+         return DRX_Config__drx_RetransmissionTimerDL_sl2;
       case 4:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl4;
+         return DRX_Config__drx_RetransmissionTimerDL_sl4;
       case 6:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl6;
+         return DRX_Config__drx_RetransmissionTimerDL_sl6;
       case 8:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl8;
+         return DRX_Config__drx_RetransmissionTimerDL_sl8;
       case 16:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl16;
+         return DRX_Config__drx_RetransmissionTimerDL_sl16;
       case 24:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl24;
+         return DRX_Config__drx_RetransmissionTimerDL_sl24;
       case 33:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl33;
+         return DRX_Config__drx_RetransmissionTimerDL_sl33;
       case 40:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl40;
+         return DRX_Config__drx_RetransmissionTimerDL_sl40;
       case 64:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl64;
+         return DRX_Config__drx_RetransmissionTimerDL_sl64;
       case 80:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl80;
+         return DRX_Config__drx_RetransmissionTimerDL_sl80;
       case 96:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl96;
+         return DRX_Config__drx_RetransmissionTimerDL_sl96;
       case 112:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl112;
+         return DRX_Config__drx_RetransmissionTimerDL_sl112;
       case 128:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl128;
+         return DRX_Config__drx_RetransmissionTimerDL_sl128;
       case 160:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl160;
+         return DRX_Config__drx_RetransmissionTimerDL_sl160;
       case 320:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl320;
+         return DRX_Config__drx_RetransmissionTimerDL_sl320;
       default:
-         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl4;
+         return DRX_Config__drx_RetransmissionTimerDL_sl4;
    }
 }
 /************************************************************************
@@ -2091,48 +2091,48 @@ e_DRX_ConfigRrc__drx_RetransmissionTimerDL convertDrxRetransmissionTimerDlValueT
  *    Functionality: As per Spec 38.331,
  *         Converts enum value drx RetransmissionTimerDL to actual value
  *
- * @params[in] e_DRX_ConfigRrc__drx_RetransmissionTimerDL retransmissionTimerDL
+ * @params[in] e_DRX_Config__drx_RetransmissionTimerDL retransmissionTimerDL
  * @return actual value of drx RetransmissionTimerDL
  *
  * **********************************************************************/
-uint16_t convertDrxRetransmissionTimerDlEnumToValue(e_DRX_ConfigRrc__drx_RetransmissionTimerDL retransmissionTimerDL)
+uint16_t convertDrxRetransmissionTimerDlEnumToValue(e_DRX_Config__drx_RetransmissionTimerDL retransmissionTimerDL)
 {
    switch(retransmissionTimerDL)
    {
 
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl0:
+      case DRX_Config__drx_RetransmissionTimerDL_sl0:
          return 0;
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl1:
+      case DRX_Config__drx_RetransmissionTimerDL_sl1:
          return 1;
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl2:
+      case DRX_Config__drx_RetransmissionTimerDL_sl2:
          return 2;
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl4:
+      case DRX_Config__drx_RetransmissionTimerDL_sl4:
          return 4;
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl6:
+      case DRX_Config__drx_RetransmissionTimerDL_sl6:
          return 6;
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl8:
+      case DRX_Config__drx_RetransmissionTimerDL_sl8:
          return 8;
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl16:
+      case DRX_Config__drx_RetransmissionTimerDL_sl16:
          return 16;
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl24:
+      case DRX_Config__drx_RetransmissionTimerDL_sl24:
          return 24;
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl33:
+      case DRX_Config__drx_RetransmissionTimerDL_sl33:
          return 33;
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl40:
+      case DRX_Config__drx_RetransmissionTimerDL_sl40:
          return 40;
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl64:
+      case DRX_Config__drx_RetransmissionTimerDL_sl64:
          return 64;
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl80:
+      case DRX_Config__drx_RetransmissionTimerDL_sl80:
          return 80;
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl96:
+      case DRX_Config__drx_RetransmissionTimerDL_sl96:
          return 96;
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl112:
+      case DRX_Config__drx_RetransmissionTimerDL_sl112:
          return 112;
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl128:
+      case DRX_Config__drx_RetransmissionTimerDL_sl128:
          return 128;
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl160:
+      case DRX_Config__drx_RetransmissionTimerDL_sl160:
          return 160;
-      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl320:
+      case DRX_Config__drx_RetransmissionTimerDL_sl320:
          return 320;
       default:
          return 4;
@@ -2154,58 +2154,58 @@ uint16_t convertDrxRetransmissionTimerDlEnumToValue(e_DRX_ConfigRrc__drx_Retrans
  * @return enum value of drxinactivityTimer 
  *
  * **********************************************************************/
-e_DRX_ConfigRrc__drx_InactivityTimer convertDrxInactivityTimerValueToEnum(uint16_t inactivityTimer)
+e_DRX_Config__drx_InactivityTimer convertDrxInactivityTimerValueToEnum(uint16_t inactivityTimer)
 {
    switch(inactivityTimer)
    {
       case 0: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms0;
+         return DRX_Config__drx_InactivityTimer_ms0;
       case 1: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms1;
+         return DRX_Config__drx_InactivityTimer_ms1;
       case 2: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms2;
+         return DRX_Config__drx_InactivityTimer_ms2;
       case 3: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms3;
+         return DRX_Config__drx_InactivityTimer_ms3;
       case 4: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms4;
+         return DRX_Config__drx_InactivityTimer_ms4;
       case 5: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms5;
+         return DRX_Config__drx_InactivityTimer_ms5;
       case 6: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms6;
+         return DRX_Config__drx_InactivityTimer_ms6;
       case 8: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms8;
+         return DRX_Config__drx_InactivityTimer_ms8;
       case 10: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms10;
+         return DRX_Config__drx_InactivityTimer_ms10;
       case 20:
-         return DRX_ConfigRrc__drx_InactivityTimer_ms20;
+         return DRX_Config__drx_InactivityTimer_ms20;
       case 30:
-         return DRX_ConfigRrc__drx_InactivityTimer_ms30;
+         return DRX_Config__drx_InactivityTimer_ms30;
       case 40: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms40;
+         return DRX_Config__drx_InactivityTimer_ms40;
       case 50: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms50;
+         return DRX_Config__drx_InactivityTimer_ms50;
       case 60: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms60;
+         return DRX_Config__drx_InactivityTimer_ms60;
       case 80: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms80;
+         return DRX_Config__drx_InactivityTimer_ms80;
       case 100: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms100;
+         return DRX_Config__drx_InactivityTimer_ms100;
       case 200: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms200;
+         return DRX_Config__drx_InactivityTimer_ms200;
       case 300: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms300;
+         return DRX_Config__drx_InactivityTimer_ms300;
       case 500: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms500;
+         return DRX_Config__drx_InactivityTimer_ms500;
       case 750: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms750;
+         return DRX_Config__drx_InactivityTimer_ms750;
       case 1280: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms1280;
+         return DRX_Config__drx_InactivityTimer_ms1280;
       case 1920: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms1920;
+         return DRX_Config__drx_InactivityTimer_ms1920;
       case 2560: 
-         return DRX_ConfigRrc__drx_InactivityTimer_ms2560;
+         return DRX_Config__drx_InactivityTimer_ms2560;
       default:
-         return DRX_ConfigRrc__drx_InactivityTimer_ms1;
+         return DRX_Config__drx_InactivityTimer_ms1;
    }
 }
 /************************************************************************
@@ -2219,59 +2219,59 @@ e_DRX_ConfigRrc__drx_InactivityTimer convertDrxInactivityTimerValueToEnum(uint16
  *    Functionality: As per Spec 38.331,
  *         Converts enum value drx inactivityTimer to actual value
  *
- * @params[in] e_DRX_ConfigRrc__drx_InactivityTimer inactivityTimer
+ * @params[in] e_DRX_Config__drx_InactivityTimer inactivityTimer
  * @return value of drxinactivityTimer
  *
  * **********************************************************************/
-uint16_t convertDrxInactivityTimerEnumToValue(e_DRX_ConfigRrc__drx_InactivityTimer inactivityTimer)
+uint16_t convertDrxInactivityTimerEnumToValue(e_DRX_Config__drx_InactivityTimer inactivityTimer)
 {
    switch(inactivityTimer)
    {
-      case DRX_ConfigRrc__drx_InactivityTimer_ms0:
+      case DRX_Config__drx_InactivityTimer_ms0:
          return 0;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms1: 
+      case DRX_Config__drx_InactivityTimer_ms1: 
          return 1;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms2:
+      case DRX_Config__drx_InactivityTimer_ms2:
          return 2;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms3:
+      case DRX_Config__drx_InactivityTimer_ms3:
          return 3;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms4:
+      case DRX_Config__drx_InactivityTimer_ms4:
          return 4;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms5:
+      case DRX_Config__drx_InactivityTimer_ms5:
          return 5;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms6:
+      case DRX_Config__drx_InactivityTimer_ms6:
          return 6;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms8:
+      case DRX_Config__drx_InactivityTimer_ms8:
          return 8;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms10:
+      case DRX_Config__drx_InactivityTimer_ms10:
          return 10;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms20:
+      case DRX_Config__drx_InactivityTimer_ms20:
          return 20;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms30:
+      case DRX_Config__drx_InactivityTimer_ms30:
          return 30;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms40:
+      case DRX_Config__drx_InactivityTimer_ms40:
          return 40;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms50:
+      case DRX_Config__drx_InactivityTimer_ms50:
          return 50;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms60:
+      case DRX_Config__drx_InactivityTimer_ms60:
          return 60;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms80:
+      case DRX_Config__drx_InactivityTimer_ms80:
          return 80;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms100:
+      case DRX_Config__drx_InactivityTimer_ms100:
          return 100;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms200:
+      case DRX_Config__drx_InactivityTimer_ms200:
          return 200;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms300:
+      case DRX_Config__drx_InactivityTimer_ms300:
          return 300;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms500:
+      case DRX_Config__drx_InactivityTimer_ms500:
          return 500;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms750:
+      case DRX_Config__drx_InactivityTimer_ms750:
          return 750;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms1280:
+      case DRX_Config__drx_InactivityTimer_ms1280:
          return 1280;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms1920:
+      case DRX_Config__drx_InactivityTimer_ms1920:
          return 1920;
-      case DRX_ConfigRrc__drx_InactivityTimer_ms2560:
+      case DRX_Config__drx_InactivityTimer_ms2560:
          return 2560;
       default:
          return 1;

@@ -12,7 +12,7 @@
 #include <asn_application.h>
 
 /* Including external dependencies */
-#include "CellGroupConfig.h"
+#include "CellGroupConfigF1AP.h"
 #include "MeasGapConfig.h"
 #include <OCTET_STRING.h>
 #include <constr_SEQUENCE.h>
@@ -26,7 +26,7 @@ struct ProtocolExtensionContainer;
 
 /* DUtoCURRCInformation */
 typedef struct DUtoCURRCInformation {
-	CellGroupConfig_t	 cellGroupConfig;
+	CellGroupConfigF1AP_t	 cellGroupConfig;
 	MeasGapConfig_t	*measGapConfig;	/* OPTIONAL */
 	OCTET_STRING_t	*requestedP_MaxFR1;	/* OPTIONAL */
 	struct ProtocolExtensionContainer	*iE_Extensions;	/* OPTIONAL */

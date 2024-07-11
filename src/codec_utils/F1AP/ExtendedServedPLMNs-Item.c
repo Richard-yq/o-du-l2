@@ -13,7 +13,7 @@ asn_TYPE_member_t asn_MBR_ExtendedServedPLMNs_Item_1[] = {
 	{ ATF_NOFLAGS, 0, offsetof(struct ExtendedServedPLMNs_Item, pLMN_Identity),
 		(ASN_TAG_CLASS_CONTEXT | (0 << 2)),
 		-1,	/* IMPLICIT tag at current level */
-		&asn_DEF_PLMN_Identity,
+		&asn_DEF_PLMN_IdentityF1AP,
 		0,
 		{ 0, 0, 0 },
 		0, 0, /* No default value */

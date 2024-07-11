@@ -12,7 +12,7 @@
 #include <asn_application.h>
 
 /* Including external dependencies */
-#include "PLMN-Identity.h"
+#include "PLMN-IdentityF1AP.h"
 #include <constr_SEQUENCE.h>
 
 #ifdef __cplusplus
@@ -24,7 +24,7 @@ struct ProtocolExtensionContainer;
 
 /* ServedPLMNs-Item */
 typedef struct ServedPLMNs_Item {
-	PLMN_Identity_t	 pLMN_Identity;
+	PLMN_IdentityF1AP_t	 pLMN_Identity;
 	struct ProtocolExtensionContainer_4624P3	*iE_Extensions	/* OPTIONAL */;
 	/*
 	 * This type is extensible,

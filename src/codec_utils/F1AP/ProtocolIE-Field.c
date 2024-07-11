@@ -1344,7 +1344,7 @@ static const asn_ioc_cell_t asn_IOS_UEContextSetupRequestIEs_1_rows[] = {
 	{ "&presence", aioc__value, &asn_DEF_Presence, &asn_VAL_97_optional },
 	{ "&id", aioc__value, &asn_DEF_ProtocolIE_ID, &asn_VAL_98_id_ServingPLMN },
 	{ "&criticality", aioc__value, &asn_DEF_Criticality, &asn_VAL_98_ignore },
-	{ "&Value", aioc__type, &asn_DEF_PLMN_Identity },
+	{ "&Value", aioc__type, &asn_DEF_PLMN_IdentityF1AP },
 	{ "&presence", aioc__value, &asn_DEF_Presence, &asn_VAL_98_optional },
 	{ "&id", aioc__value, &asn_DEF_ProtocolIE_ID, &asn_VAL_99_id_GNB_DU_UE_AMBR_UL },
 	{ "&criticality", aioc__value, &asn_DEF_Criticality, &asn_VAL_99_ignore },
@@ -26563,14 +26563,14 @@ static asn_TYPE_member_t asn_MBR_value_340[] = {
 		0, 0, /* No default value */
 		"MaskedIMEISV"
 		},
-	{ ATF_NOFLAGS, 0, offsetof(struct UEContextSetupRequestIEs__value, choice.PLMN_Identity),
+	{ ATF_NOFLAGS, 0, offsetof(struct UEContextSetupRequestIEs__value, choice.PLMN_IdentityF1AP),
 		(ASN_TAG_CLASS_UNIVERSAL | (4 << 2)),
 		0,
-		&asn_DEF_PLMN_Identity,
+		&asn_DEF_PLMN_IdentityF1AP,
 		0,
 		{ 0, 0, 0 },
 		0, 0, /* No default value */
-		"PLMN-Identity"
+		"PLMN-IdentityF1AP"
 		},
 	{ ATF_NOFLAGS, 0, offsetof(struct UEContextSetupRequestIEs__value, choice.BitRate),
 		(ASN_TAG_CLASS_UNIVERSAL | (2 << 2)),
@@ -26620,7 +26620,7 @@ static const asn_TYPE_tag2member_t asn_MAP_value_tag2el_340[] = {
     { (ASN_TAG_CLASS_UNIVERSAL | (3 << 2)), 15, 0, 0 }, /* MaskedIMEISV */
     { (ASN_TAG_CLASS_UNIVERSAL | (4 << 2)), 8, 0, 2 }, /* ResourceCoordinationTransferContainer */
     { (ASN_TAG_CLASS_UNIVERSAL | (4 << 2)), 14, -1, 1 }, /* RRCContainer */
-    { (ASN_TAG_CLASS_UNIVERSAL | (4 << 2)), 16, -2, 0 }, /* PLMN-Identity */
+    { (ASN_TAG_CLASS_UNIVERSAL | (4 << 2)), 16, -2, 0 }, /* PLMN-IdentityF1AP */
     { (ASN_TAG_CLASS_UNIVERSAL | (10 << 2)), 4, 0, 2 }, /* CellULConfigured */
     { (ASN_TAG_CLASS_UNIVERSAL | (10 << 2)), 12, -1, 1 }, /* InactivityMonitoringRequest */
     { (ASN_TAG_CLASS_UNIVERSAL | (10 << 2)), 18, -2, 0 }, /* RRCDeliveryStatusRequest */

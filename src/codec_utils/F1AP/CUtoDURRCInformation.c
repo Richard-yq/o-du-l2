@@ -21,7 +21,7 @@ static asn_TYPE_member_t asn_MBR_CUtoDURRCInformation_1[] = {
 	{ ATF_POINTER, 3, offsetof(struct CUtoDURRCInformation, uE_CapabilityRAT_ContainerList),
 		(ASN_TAG_CLASS_CONTEXT | (1 << 2)),
 		-1,	/* IMPLICIT tag at current level */
-		&asn_DEF_UE_CapabilityRAT_ContainerList,
+		&asn_DEF_UE_CapabilityRAT_ContainerListF1AP,
 		0,
 		{ 0, 0, 0 },
 		0, 0, /* No default value */

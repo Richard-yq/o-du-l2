@@ -36,7 +36,7 @@
 #include "PagingUE-Identity.h"
 #include "PagingRecord.h"
 #include "PagingRecordList.h"
-#include "PagingRrc.h"
+#include "Paging.h"
 #include "PCCH-MessageType.h"
 #include "PCCH-Message.h"
 #include "odu_common_codec.h"
@@ -575,7 +575,7 @@ uint8_t duSendCellDeletReq(uint16_t cellId)
  * ****************************************************************/
 void freePcchPdu(PCCH_Message_t *pcchMsg)
 {
-   PagingRrc_t *pagingMsg = NULLP;
+   Paging_t *pagingMsg = NULLP;
    uint8_t recordIdx = 0;
 
    if(pcchMsg != NULLP)
@@ -602,7 +602,7 @@ void freePcchPdu(PCCH_Message_t *pcchMsg)
                }
                DU_FREE(pagingMsg->pagingRecordList, sizeof(PagingRecordList_t));
             }
-            DU_FREE(pcchMsg->message.choice.c1->choice.paging, sizeof(PagingRrc_t));
+            DU_FREE(pcchMsg->message.choice.c1->choice.paging, sizeof(Paging_t));
          }
          DU_FREE(pcchMsg->message.choice.c1 , sizeof(PCCH_MessageType_t)); 
       }
@@ -632,7 +632,7 @@ uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, Cm
    DuPagUeRecord  *ueRecord = NULLP;
    PCCH_Message_t *pcchMsg = NULLP;
    asn_enc_rval_t encRetVal;
-   PagingRrc_t    *pagingMsg = NULLP;
+   Paging_t    *pagingMsg = NULLP;
    DlPcchInd     *macPcchInd = NULLP;
    uint8_t        recordIdx = 0, ret = RFAILED;
    
@@ -662,7 +662,7 @@ uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, Cm
          break;
       }
       pcchMsg->message.choice.c1->present = PCCH_MessageType__c1_PR_paging;
-      DU_ALLOC(pcchMsg->message.choice.c1->choice.paging, sizeof(PagingRrc_t));
+      DU_ALLOC(pcchMsg->message.choice.c1->choice.paging, sizeof(Paging_t));
 
       pagingMsg = pcchMsg->message.choice.c1->choice.paging;
       if(pagingMsg == NULLP)

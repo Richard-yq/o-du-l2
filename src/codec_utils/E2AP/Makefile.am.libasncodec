@@ -343,7 +343,7 @@ ASN_MODULE_HDRS=	\
 	../../E2_v3.0_output/GNB-ID-Choice.h	\
 	../../E2_v3.0_output/MMEname.h	\
 	../../E2_v3.0_output/NGENB-DU-ID.h	\
-	../../E2_v3.0_output/PLMN-Identity.h	\
+	../../E2_v3.0_output/PLMN-IdentityE2AP.h	\
 	../../E2_v3.0_output/RANfunctionDefinition.h	\
 	../../E2_v3.0_output/RANfunctionID.h	\
 	../../E2_v3.0_output/RANfunctionOID.h	\

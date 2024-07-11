@@ -6338,7 +6338,7 @@ uint8_t BuildMacLCConfig(MacLcCfg macLcCfgDb, struct LogicalChannelConfig *macLc
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildRlcBearerToAddModList(CuUeCb *ueCb, struct CellGroupConfigRrc__rlc_BearerToAddModList *rlcBearerList, bool updateAllRbCfg)
+uint8_t BuildRlcBearerToAddModList(CuUeCb *ueCb, struct CellGroupConfig__rlc_BearerToAddModList *rlcBearerList, bool updateAllRbCfg)
 {
    uint8_t idx, srbIdx = 0, drbIdx = 0, elementCnt=0;
 
@@ -6364,7 +6364,7 @@ uint8_t BuildRlcBearerToAddModList(CuUeCb *ueCb, struct CellGroupConfigRrc__rlc_
       DU_LOG("INFO  --> F1AP : No  RLC Bearer available to add or modify");
       return ROK;
    }
-   CU_ALLOC(rlcBearerList, sizeof(struct CellGroupConfigRrc__rlc_BearerToAddModList));
+   CU_ALLOC(rlcBearerList, sizeof(struct CellGroupConfig__rlc_BearerToAddModList));
    if(!rlcBearerList)
    {
       DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in CellGrpConfig");
@@ -6516,7 +6516,7 @@ uint8_t FreeMemCellGrpCfg(CellGroupConfigRrc_t *cellGrpCfg)
    BWP_DownlinkDedicated_t *dlBwp=NULLP;
    MAC_CellGroupConfig_t *macCellGrpCfg=NULLP;
    PhysicalCellGroupConfig_t *phyCellGrpCfg=NULLP;
-   struct CellGroupConfigRrc__rlc_BearerToAddModList *rlcBearerList=NULLP;
+   struct CellGroupConfig__rlc_BearerToAddModList *rlcBearerList=NULLP;
    struct RLC_Config *rlcConfig=NULLP;
    struct LogicalChannelConfig *macLcConfig=NULLP;
    struct SchedulingRequestConfig *schedulingRequestConfig=NULLP;
@@ -6563,7 +6563,7 @@ uint8_t FreeMemCellGrpCfg(CellGroupConfigRrc_t *cellGrpCfg)
 	 }
 	 CU_FREE(rlcBearerList->list.array, rlcBearerList->list.size);
       }
-      CU_FREE(cellGrpCfg->rlc_BearerToAddModList, sizeof(struct CellGroupConfigRrc__rlc_BearerToAddModList));
+      CU_FREE(cellGrpCfg->rlc_BearerToAddModList, sizeof(struct CellGroupConfig__rlc_BearerToAddModList));
    }
 
    macCellGrpCfg = cellGrpCfg->mac_CellGroupConfig;

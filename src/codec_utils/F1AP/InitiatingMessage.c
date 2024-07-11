@@ -153,7 +153,7 @@ static const asn_ioc_cell_t asn_IOS_F1AP_ELEMENTARY_PROCEDURES_1_rows[] = {
 	{ "&UnsuccessfulOutcome",  },
 	{ "&procedureCode", aioc__value, &asn_DEF_ProcedureCode, &asn_VAL_19_id_SystemInformationDeliveryCommand },
 	{ "&criticality", aioc__value, &asn_DEF_Criticality, &asn_VAL_19_ignore },
-	{ "&InitiatingMessage", aioc__type, &asn_DEF_Paging },
+	{ "&InitiatingMessage", aioc__type, &asn_DEF_PagingF1AP },
 	{ "&SuccessfulOutcome",  },
 	{ "&UnsuccessfulOutcome",  },
 	{ "&procedureCode", aioc__value, &asn_DEF_ProcedureCode, &asn_VAL_20_id_Paging },
@@ -503,7 +503,7 @@ static asn_TYPE_member_t asn_MBR_value_4[] = {
 	{ ATF_NOFLAGS, 0, offsetof(struct InitiatingMessage__value, choice.Paging),
 		(ASN_TAG_CLASS_UNIVERSAL | (16 << 2)),
 		0,
-		&asn_DEF_Paging,
+		&asn_DEF_PagingF1AP,
 		0,
 		{ 0, 0, 0 },
 		0, 0, /* No default value */

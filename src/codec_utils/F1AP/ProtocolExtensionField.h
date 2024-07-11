@@ -25,8 +25,8 @@
 #include "AvailablePLMNList.h"
 #include "ExtendedAvailablePLMN-List.h"
 #include "HandoverPreparationInformation.h"
-#include "CellGroupConfig.h"
-#include "MeasurementTimingConfiguration.h"
+#include "CellGroupConfigF1AP.h"
+#include "MeasurementTimingConfigurationF1AP.h"
 #include "UEAssistanceInformation.h"
 #include "RLC-Status.h"
 #include "PDCPSNLength.h"
@@ -41,7 +41,7 @@
 #include "RequestedBandCombinationIndex.h"
 #include "RequestedFeatureSetEntryIndex.h"
 #include "RequestedP-MaxFR2.h"
-#include "DRX-Config.h"
+#include "DRX-ConfigF1AP.h"
 #include "QoSFlowMappingIndication.h"
 #include "PDUSessionID.h"
 #include "BitRate.h"
@@ -784,8 +784,8 @@ typedef struct CUtoDURRCInformation_ExtIEs {
 		CUtoDURRCInformation_ExtIEs__extensionValue_PR present;
 		union CUtoDURRCInformation_ExtIEs__extensionValue_u {
 			HandoverPreparationInformation_t	 HandoverPreparationInformation;
-			CellGroupConfig_t	 CellGroupConfig;
-			MeasurementTimingConfiguration_t	 MeasurementTimingConfiguration;
+			CellGroupConfigF1AP_t	 CellGroupConfig;
+			MeasurementTimingConfigurationF1AP_t	 MeasurementTimingConfiguration;
 			UEAssistanceInformation_t	 UEAssistanceInformation;
 		} choice;
 		
