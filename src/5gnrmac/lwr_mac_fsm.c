@@ -1350,8 +1350,8 @@ uint32_t getParamValue(fapi_uint16_tlv_t *tlv, uint16_t type)
  ******************************************************************/
 void setMibPdu(uint8_t *mibPdu, uint32_t *val, uint16_t sfn)
 {
-   *mibPdu |= (((uint8_t)(sfn << 2)) & MIB_SFN_BITMASK);
-   *val = (mibPdu[0] << 24 | mibPdu[1] << 16 | mibPdu[2] << 8);
+   *mibPdu |= ((uint8_t)((sfn >> 4) & 0x3f) << 1);
+   *val = (mibPdu[2] << 24 | mibPdu[1] << 16 | mibPdu[0] << 8);
    DU_LOG("\nDEBUG  -->  LWR_MAC: MIB PDU %x", *val);
 }
 
