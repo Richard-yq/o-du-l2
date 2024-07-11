@@ -203,6 +203,41 @@ uint8_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
 
 /*******************************************************************
  *
+ * @brief Processes CRC Indication from OAI PHY
+ *
+ * @details
+ *
+ *    Function : OAI_OSC_nfapiMacCrcInd
+ *
+ *    Functionality:
+ *       Processes CRC Indication from OAI PHY
+ *
+ * @params[in] Post Structure Pointer
+ *             Crc Indication Pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t OAI_OSC_nfapiMacCrcInd(Pst *pst, CrcInd *crcInd)
+{
+   uint16_t     cellIdx;
+   CrcIndInfo   crcIndInfo;
+   DU_LOG("\nDEBUG  -->  MAC : Received CRC indication from OAI PHY");
+   GET_CELL_IDX(crcInd->cellId, cellIdx);
+   /* Considering one pdu and one preamble */ 
+   crcIndInfo.cellId = macCb.macCell[cellIdx]->cellId;
+   crcIndInfo.crnti = crcInd->crcInfo[0].rnti;
+   crcIndInfo.timingInfo.sfn = crcInd->timingInfo.sfn;
+   crcIndInfo.timingInfo.slot = crcInd->timingInfo.slot;
+   crcIndInfo.numCrcInd = crcInd->crcInfo[0].numCb;
+   crcIndInfo.crcInd[0] = crcInd->crcInfo[0].cbCrcStatus[0];
+
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, crcInd, sizeof(CrcInd));
+   return(sendCrcIndMacToSch(&crcIndInfo));
+}
+
+/*******************************************************************
+ *
  * @brief Process Rx Data Ind at MAC
  *
  * @details
@@ -223,6 +258,52 @@ uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
    uint8_t ueId = 0;
    uint16_t pduIdx, cellIdx = 0;
    DU_LOG("\nDEBUG  -->  MAC : Received Rx Data indication");
+   /* TODO : compare the handle received in RxDataInd with handle send in PUSCH
+    * PDU, which is stored in raCb */
+
+   for(pduIdx = 0; pduIdx < rxDataInd->numPdus; pduIdx++)
+   {
+
+      GET_CELL_IDX(rxDataInd->cellId, cellIdx);
+      GET_UE_ID(rxDataInd->pdus[pduIdx].rnti, ueId);
+      
+      if(macCb.macCell[cellIdx] && macCb.macCell[cellIdx]->ueCb[ueId -1].transmissionAction == STOP_TRANSMISSION)
+      {
+         DU_LOG("\nINFO   -->  MAC : UL data transmission not allowed for UE %d", macCb.macCell[cellIdx]->ueCb[ueId -1].ueId);
+      }
+      else
+      {
+         unpackRxData(rxDataInd->cellId, rxDataInd->timingInfo, &rxDataInd->pdus[pduIdx]);
+      }
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, rxDataInd->pdus[pduIdx].pduData,\
+         rxDataInd->pdus[pduIdx].pduLength);
+   }
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, rxDataInd, sizeof(RxDataInd));
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Process Rx Data Ind at MAC
+ *
+ * @details
+ *
+ *    Function : OAI_OSC_nfapiMacRxDataInd
+ *
+ *    Functionality:
+ *       Process Rx Data Ind at MAC
+ *
+ * @params[in] Post structure
+ *             Rx Data Indication
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t OAI_OSC_nfapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
+{
+   uint8_t ueId = 0;
+   uint16_t pduIdx, cellIdx = 0;
+   DU_LOG("\nDEBUG  -->  MAC : Received Rx Data indication from OAI PHY");
    /* TODO : compare the handle received in RxDataInd with handle send in PUSCH
     * PDU, which is stored in raCb */
 
@@ -878,6 +959,72 @@ uint8_t FapiMacUciInd(Pst *pst, UciInd *macUciInd)
                if(macUciInd->pdus[pduIdx].uci.uciPucchF0F1.srInfo.srIndPres)
                {
                   DU_LOG("\nDEBUG  -->  MAC : Received SR UCI indication");
+                  crnti = macUciInd->pdus[pduIdx].uci.uciPucchF0F1.crnti; 
+                  ret = buildAndSendSrInd(macUciInd, crnti);
+               }
+            }
+               break;
+            case UCI_IND_PUCCH_F2F3F4:
+               break;
+            default:
+               DU_LOG("\nERROR  -->  MAC: Invalid Pdu Type %d at FapiMacUciInd", macUciInd->pdus[pduIdx].pduType);
+               ret = RFAILED;
+               break;
+         }
+         pduIdx++;
+         nPdus--;
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: Received Uci Ind is NULL at FapiMacUciInd()");
+      ret = RFAILED;
+   }
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macUciInd, sizeof(UciInd));
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes UCI Indication from OAI PHY
+ *
+ * @details
+ *
+ *    Function : OAI_OSC_nfapiMacUciInd
+ *
+ *    Functionality:
+ *       Processes UCI Indication from OAI PHY
+ *
+ * @params[in] Post Structure Pointer
+ *             UCI Indication Pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t OAI_OSC_nfapiMacUciInd(Pst *pst, UciInd *macUciInd)
+{
+   uint8_t     pduIdx = 0, ret = ROK;
+   uint16_t    nPdus = 0, crnti = 0, cellIdx = 0;
+
+   if(macUciInd)
+   {
+      nPdus = macUciInd->numUcis;
+      while(nPdus)
+      {
+         switch(macUciInd->pdus[pduIdx].pduType)
+         {
+            case UCI_IND_PUSCH:
+               break;
+            case UCI_IND_PUCCH_F0F1:
+            {
+               {
+                  DU_LOG("\nDEBUG  -->  MAC : Received HARQ UCI Indication from OAI PHY\n");
+                  GET_CELL_IDX(macUciInd->cellId, cellIdx);
+                  buildAndSendHarqInd(&macUciInd->pdus[pduIdx].uci.uciPucchF0F1.harqInfo, macUciInd->pdus[pduIdx].uci.uciPucchF0F1.crnti, cellIdx, &macUciInd->slotInd);
+               }
+               if(macUciInd->pdus[pduIdx].uci.uciPucchF0F1.srInfo.srIndPres)
+               {
+                  DU_LOG("\nDEBUG  -->  MAC : Received SR UCI indication from OAI PHY");
                   crnti = macUciInd->pdus[pduIdx].uci.uciPucchF0F1.crnti; 
                   ret = buildAndSendSrInd(macUciInd, crnti);
                }

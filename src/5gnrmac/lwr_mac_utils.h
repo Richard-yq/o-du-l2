@@ -17,9 +17,13 @@
 *******************************************************************************/
 
 /* Fill coupling type for sending msg from Lower MAC to MAC.
- * Using TC for phy stub data and LWLC with Intel L1 */
+ * Using TC for phy stub and nFAPI data and LWLC with Intel L1 */
 #ifdef INTEL_WLS_MEM
 #define FILL_LWR_MAC_TO_MAC_SEL(_pst) _pst.selector = ODU_SELECTOR_LWLC
+/* ======== small cell integration ======== */
+#elif NFAPI
+#define FILL_LWR_MAC_TO_MAC_SEL(_pst) _pst.selector = ODU_SELECTOR_TC 
+/* ======================================== */
 #else
 #define FILL_LWR_MAC_TO_MAC_SEL(_pst) _pst.selector = ODU_SELECTOR_TC
 #endif

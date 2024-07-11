@@ -494,8 +494,11 @@ uint8_t macProcSlotInd(SlotTimingInfo slotInd)
    buildAndSendMuxPdu(slotInd);
 
    /* Trigger for DL TTI REQ */
+#ifdef NFAPI
+   OAI_OSC_fillDlTtiReq(slotInd);
+#else
    fillDlTtiReq(slotInd);
-
+#endif
    return ROK;
 }  /* macProcSlotInd */
 
@@ -591,6 +594,102 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotTimingInfo *slotInd)
 
    return ret;
 }  /* fapiMacSlotInd */
+
+/**
+ * @brief Transmission time interval indication from OAI PHY.
+ *
+ * @details
+ *
+ *     Function : OAI_OSC_nfapiMacSlotInd 
+ *      
+ *      This API is invoked by OAI PHY to indicate TTI indication to MAC for a cell.
+ *           
+ *  @param[in]  Pst            *pst
+ *  @param[in]  SuId           suId 
+ *  @param[in]  SlotTimingInfo    *slotInd
+ *  @return  
+ *      -# ROK 
+ *      -# RFAILED 
+ **/
+
+uint8_t OAI_OSC_nfapiMacSlotInd(Pst *pst, SlotTimingInfo *slotInd)
+{
+   uint8_t               ret = ROK;
+   uint16_t              cellIdx;
+   volatile uint32_t     startTime=0;
+#ifdef ODU_SLOT_IND_DEBUG_LOG
+   DU_LOG("\nINFO  -->  %s() Received slot indication from PHY\n", __FUNCTION__);
+   DU_LOG("\nDEBUG  -->  MAC : Slot Indication received. cellID:%d [%d : %d]",slotInd->cellId ,slotInd->sfn, slotInd->slot);
+#endif
+   /*starting Task*/
+   ODU_START_TASK(&startTime, PID_MAC_TTI_IND);
+   gSlotCount++;
+
+   if(gSlotCount == 1)
+   {
+	   GET_CELL_IDX(slotInd->cellId, cellIdx);
+	   macCb.macCell[cellIdx]->state = CELL_STATE_UP;
+   }
+
+/* When testing L2 with OAI-L1, any changes specific to 
+ * timer mode testing must be guarded under INTEL_TIMER_MODE*/
+#ifndef INTEL_TIMER_MODE
+   /* send slot indication to scheduler */
+   ret = sendSlotIndMacToSch(slotInd);
+   if(ret != ROK)
+   {
+      DU_LOG("\nERROR  -->  MAC : Sending of slot ind msg from MAC to SCH failed");
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotTimingInfo));
+      return ret;
+   }
+
+   ret = macProcSlotInd(*slotInd);
+   if(ret != ROK)
+   {
+      DU_LOG("\nERROR  -->  MAC : macProcSlotInd failed");
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotTimingInfo));
+      return ret;
+   }
+#endif
+
+   /*First Slot Ind is for CellUp. Any other Slot, will be notified to DUAPP as
+    * SLOT_IND*/
+   if(gSlotCount == 1)   
+   {
+      /* send cell up indication to du app */
+      ret = sendCellUpIndMacToDuApp(slotInd->cellId);
+
+   }
+   else
+   {
+      /* send slot indication to du app */
+      ret = sendSlotIndToDuApp(slotInd);
+   }
+   
+   if(ret != ROK)
+   {
+      DU_LOG("\nERROR  -->  MAC :Sending of slot ind msg from MAC to DU APP failed");
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotTimingInfo));
+      return ret;
+   }
+
+   /*stoping Task*/
+   ODU_STOP_TASK(startTime, PID_MAC_TTI_IND);
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotTimingInfo));
+
+#ifdef INTEL_WLS_MEM
+   lwrMacCb.phySlotIndCntr++;
+   if(lwrMacCb.phySlotIndCntr > WLS_MEM_FREE_PRD)
+   {
+      lwrMacCb.phySlotIndCntr = 1;
+   }
+   freeWlsBlockList(lwrMacCb.phySlotIndCntr - 1);
+#endif
+
+   return ret;
+}  /* OAI_OSC_nfapiMacSlotInd */
+
+
 
 /**********************************************************************
   End of file
