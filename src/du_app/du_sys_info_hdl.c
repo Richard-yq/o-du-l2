@@ -1124,13 +1124,13 @@ uint8_t BuildPdschCfgCommon(struct SetupRelease_PDSCH_ConfigCommon *pdschCfg)
                timeDomRsrcAllocInfo = pdschSetup->pdsch_TimeDomainAllocationList->list.array[idx];
 
                /* K0 */
-               DU_ALLOC(timeDomRsrcAllocInfo->k0, sizeof(long));
-               if(!timeDomRsrcAllocInfo->k0)
-               {
-                  DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
-                  return RFAILED;
-               }
-               *timeDomRsrcAllocInfo->k0 = duPdschCfg.timeDomAlloc[idx].k0;
+               // DU_ALLOC(timeDomRsrcAllocInfo->k0, sizeof(long));
+               // if(!timeDomRsrcAllocInfo->k0)
+               // {
+               //    DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
+               //    return RFAILED;
+               // }
+               // *timeDomRsrcAllocInfo->k0 = duPdschCfg.timeDomAlloc[idx].k0;
 
                timeDomRsrcAllocInfo->mappingType = duPdschCfg.timeDomAlloc[idx].mapType;
                timeDomRsrcAllocInfo->startSymbolAndLength = duPdschCfg.timeDomAlloc[idx].sliv;
@@ -1784,7 +1784,7 @@ uint8_t  BuildRachCfgCommon(struct SetupRelease_RACH_ConfigCommon *rachCfg)
             setup->rach_ConfigGeneric.msg1_FDM = duRachCfg.msg1Fdm;
 /* ======== small cell integration ======== */
 #ifdef NFAPI
-            setup->rach_ConfigGeneric.msg1_FrequencyStart = 82;
+            setup->rach_ConfigGeneric.msg1_FrequencyStart = 0;
             setup->rach_ConfigGeneric.zeroCorrelationZoneConfig = 13;
             setup->rach_ConfigGeneric.preambleReceivedTargetPower = -96;
 #else 
@@ -1798,13 +1798,13 @@ uint8_t  BuildRachCfgCommon(struct SetupRelease_RACH_ConfigCommon *rachCfg)
             setup->rach_ConfigGeneric.ra_ResponseWindow = duRachCfg.raRspWindow;
 
             /* Total number of RA preambles */
-            DU_ALLOC(setup->totalNumberOfRA_Preambles, sizeof(long));
-            if(!setup->totalNumberOfRA_Preambles)
-            {
-               DU_LOG("\nERROR  -->  DU APP : Rach Config memory alloc failed");
-               return RFAILED;
-            }
-            *setup->totalNumberOfRA_Preambles = duRachCfg.numRaPreamble;
+            // DU_ALLOC(setup->totalNumberOfRA_Preambles, sizeof(long));
+            // if(!setup->totalNumberOfRA_Preambles)
+            // {
+            //    DU_LOG("\nERROR  -->  DU APP : Rach Config memory alloc failed");
+            //    return RFAILED;
+            // }
+            // *setup->totalNumberOfRA_Preambles = duRachCfg.numRaPreamble;
 
             /* SSB per RACH occassion and CB Preambles per SSB */
             DU_ALLOC(setup->ssb_perRACH_OccasionAndCB_PreamblesPerSSB,\
@@ -2025,14 +2025,8 @@ uint8_t BuildPuschCfgCommon(struct SetupRelease_PUSCH_ConfigCommon *puschCfg)
                {
                   DU_LOG("\nERROR  -->  DU APP : PUSCH Config memory alloc failed");
                   return RFAILED;
-               }
-/* ======== small cell integration ======== */
-#ifdef NFAPI
-               *timeDomRsrcAllocInfo->k2 = 6;
-#else
+               }   
                *timeDomRsrcAllocInfo->k2 = duPuschCfg.timeDomAllocList[idx].k2;
-#endif
-/* ======================================== */               
                timeDomRsrcAllocInfo->mappingType = duPuschCfg.timeDomAllocList[idx].mapType;
                timeDomRsrcAllocInfo->startSymbolAndLength = duPuschCfg.timeDomAllocList[idx].sliv;
             }
@@ -2137,6 +2131,15 @@ uint8_t BuildPucchCfgCommon( struct SetupRelease_PUCCH_ConfigCommon *pucchCfg)
 
             /* Group hopping */
             setup->pucch_GroupHopping = duPucchCfg.grpHop;
+
+            /* Hopping Id */
+            DU_ALLOC(setup->hoppingId, sizeof(long));
+            if(!setup->hoppingId)
+            {
+               DU_LOG("\nERROR  -->  DU APP : PUCCH Config memory alloc failed");
+               return RFAILED;
+            }
+            *setup->hoppingId = 40;
 
             /* P0 nominal */
             DU_ALLOC(setup->p0_nominal, sizeof(long));
@@ -2476,26 +2479,26 @@ uint8_t BuildSib1Msg()
 #endif
 /* ======================================== */
 
-      DU_ALLOC(sib1Msg->cellSelectionInfo->q_RxLevMinSUL, sizeof(Q_RxLevMin_t));
-      if(!sib1Msg->cellSelectionInfo->q_RxLevMinSUL)
-      {
-         DU_LOG("\nERROR  -->  DU APP: BuildSib1Msg(): Memory allocation failed for q_RxLevMinSUL");
-         break;
-      }
-      *(sib1Msg->cellSelectionInfo->q_RxLevMinSUL) = -50;
+      // DU_ALLOC(sib1Msg->cellSelectionInfo->q_RxLevMinSUL, sizeof(Q_RxLevMin_t));
+      // if(!sib1Msg->cellSelectionInfo->q_RxLevMinSUL)
+      // {
+      //    DU_LOG("\nERROR  -->  DU APP: BuildSib1Msg(): Memory allocation failed for q_RxLevMinSUL");
+      //    break;
+      // }
+      // *(sib1Msg->cellSelectionInfo->q_RxLevMinSUL) = -50;
 
-      DU_ALLOC(sib1Msg->cellSelectionInfo->q_QualMin, sizeof(Q_QualMin_t));
-      if(!sib1Msg->cellSelectionInfo->q_QualMin)
-      {
-         DU_LOG("\nERROR  -->  DU APP: BuildSib1Msg(): Memory allocation failed for q_QualMin");
-         break;
-      }
-      *(sib1Msg->cellSelectionInfo->q_QualMin) = -30;
+      // DU_ALLOC(sib1Msg->cellSelectionInfo->q_QualMin, sizeof(Q_QualMin_t));
+      // if(!sib1Msg->cellSelectionInfo->q_QualMin)
+      // {
+      //    DU_LOG("\nERROR  -->  DU APP: BuildSib1Msg(): Memory allocation failed for q_QualMin");
+      //    break;
+      // }
+      // *(sib1Msg->cellSelectionInfo->q_QualMin) = -30;
 
       /* PLMN list */
       cellAccessInfo = &sib1Msg->cellAccessRelatedInfo;
-      cellAccessInfo->plmn_IdentityList.list.count = elementCnt;
-      cellAccessInfo->plmn_IdentityList.list.size = elementCnt * sizeof(PLMN_IdentityInfo_t *);
+      // cellAccessInfo->plmn_IdentityInfoList.list.count = elementCnt;
+      // cellAccessInfo->plmn_IdentityInfoList.list.size = elementCnt * sizeof(PLMN_IdentityInfo_t *);
 
       ret1 =  BuildPlmnList(cellAccessInfo);
       if(ret1 != ROK)
@@ -2503,40 +2506,40 @@ uint8_t BuildSib1Msg()
          break;
       }
       /* Connection Establish Failure Control */
-      DU_ALLOC(sib1Msg->connEstFailureControl, sizeof(ConnEstFailureControl_t));
-      if(!sib1Msg->connEstFailureControl)
-      {
-         DU_LOG("\nERROR  -->  DU APP: sib1Msg->connEstFailureControl memory allocation failure");
-         break;
-      }
-      sib1Msg->connEstFailureControl->connEstFailCount = duCfgParam.sib1Params.connEstFailCnt;
-      sib1Msg->connEstFailureControl->connEstFailOffsetValidity = duCfgParam.sib1Params.connEstFailOffValidity;
+      // DU_ALLOC(sib1Msg->connEstFailureControl, sizeof(ConnEstFailureControl_t));
+      // if(!sib1Msg->connEstFailureControl)
+      // {
+      //    DU_LOG("\nERROR  -->  DU APP: sib1Msg->connEstFailureControl memory allocation failure");
+      //    break;
+      // }
+      // sib1Msg->connEstFailureControl->connEstFailCount = duCfgParam.sib1Params.connEstFailCnt;
+      // sib1Msg->connEstFailureControl->connEstFailOffsetValidity = duCfgParam.sib1Params.connEstFailOffValidity;
       
-      DU_ALLOC(sib1Msg->connEstFailureControl->connEstFailOffset, sizeof(long));
-      if(!sib1Msg->connEstFailureControl->connEstFailOffset)
-      {
-         DU_LOG("\nERROR  -->  DU APP: BuildSib1Msg(): Memory allocation failed for connEstFailOffset");
-         break;
-      }
-      *(sib1Msg->connEstFailureControl->connEstFailOffset) = duCfgParam.sib1Params.connEstFailOffset;
+      // DU_ALLOC(sib1Msg->connEstFailureControl->connEstFailOffset, sizeof(long));
+      // if(!sib1Msg->connEstFailureControl->connEstFailOffset)
+      // {
+      //    DU_LOG("\nERROR  -->  DU APP: BuildSib1Msg(): Memory allocation failed for connEstFailOffset");
+      //    break;
+      // }
+      // *(sib1Msg->connEstFailureControl->connEstFailOffset) = duCfgParam.sib1Params.connEstFailOffset;
 
-      /* SI Scheduling Info */
-      DU_ALLOC(sib1Msg->si_SchedulingInfo, sizeof(SI_SchedulingInfo_t));
-      if(!sib1Msg->si_SchedulingInfo)
-      {
-         DU_LOG("\nERROR  -->  DU APP: sib1Msg->si_SchedulingInfo memory allocation failure");
-         break;
-      } 
-      elementCnt = ODU_VALUE_ONE;
-      sib1Msg->si_SchedulingInfo->schedulingInfoList.list.count = elementCnt;
-      sib1Msg->si_SchedulingInfo->schedulingInfoList.list.size = elementCnt *
-         sizeof(struct SchedulingInfo *);
-      ret1 = BuildSiSchedInfoList(&sib1Msg->si_SchedulingInfo->schedulingInfoList);
-      if(ret1 != ROK)
-      {
-         break;
-      }
-      sib1Msg->si_SchedulingInfo->si_WindowLength = duCfgParam.sib1Params.siSchedInfo.winLen;
+      // /* SI Scheduling Info */
+      // DU_ALLOC(sib1Msg->si_SchedulingInfo, sizeof(SI_SchedulingInfo_t));
+      // if(!sib1Msg->si_SchedulingInfo)
+      // {
+      //    DU_LOG("\nERROR  -->  DU APP: sib1Msg->si_SchedulingInfo memory allocation failure");
+      //    break;
+      // } 
+      // elementCnt = ODU_VALUE_ONE;
+      // sib1Msg->si_SchedulingInfo->schedulingInfoList.list.count = elementCnt;
+      // sib1Msg->si_SchedulingInfo->schedulingInfoList.list.size = elementCnt *
+      //    sizeof(struct SchedulingInfo *);
+      // ret1 = BuildSiSchedInfoList(&sib1Msg->si_SchedulingInfo->schedulingInfoList);
+      // if(ret1 != ROK)
+      // {
+      //    break;
+      // }
+      // sib1Msg->si_SchedulingInfo->si_WindowLength = duCfgParam.sib1Params.siSchedInfo.winLen;
 
       /* Serving Cell Config Common */
       DU_ALLOC(sib1Msg->servingCellConfigCommon, sizeof(ServingCellConfigCommonSIB_t));
@@ -2546,14 +2549,29 @@ uint8_t BuildSib1Msg()
          break;
       }
       ret1 =  BuildServCellCfgCommonSib(sib1Msg->servingCellConfigCommon);
+      // DU_ALLOC(sib1Msg->servingCellConfigCommon->downlinkConfigCommon.initialDownlinkBWP.pdcch_ConfigCommon->choice.setup->commonSearchSpaceList->list.array[0]->searchSpaceType, sizeof(*(sib1Msg->servingCellConfigCommon->downlinkConfigCommon.initialDownlinkBWP.pdcch_ConfigCommon->choice.setup->commonSearchSpaceList->list.array[0]->searchSpaceType)));
+      // DU_ALLOC(sib1Msg->servingCellConfigCommon->downlinkConfigCommon.initialDownlinkBWP.pdcch_ConfigCommon->choice.setup->commonSearchSpaceList->list.array[0]->searchSpaceType->choice.common, sizeof(*(sib1Msg->servingCellConfigCommon->downlinkConfigCommon.initialDownlinkBWP.pdcch_ConfigCommon->choice.setup->commonSearchSpaceList->list.array[0]->searchSpaceType->choice.common)));
+      // DU_ALLOC(sib1Msg->servingCellConfigCommon->downlinkConfigCommon.initialDownlinkBWP.pdcch_ConfigCommon->choice.setup->commonSearchSpaceList->list.array[0]->searchSpaceType->choice.common->dci_Format0_0_AndFormat1_0, sizeof(*(sib1Msg->servingCellConfigCommon->downlinkConfigCommon.initialDownlinkBWP.pdcch_ConfigCommon->choice.setup->commonSearchSpaceList->list.array[0]->searchSpaceType->choice.common->dci_Format0_0_AndFormat1_0)));
+      // sib1Msg->servingCellConfigCommon->downlinkConfigCommon.initialDownlinkBWP.pdcch_ConfigCommon->choice.setup->commonSearchSpaceList->list.array[0]->searchSpaceType->present = 1; 
+
       if(ret1 != ROK)
       {
          break;
       }
 
-      xer_fprint(stdout, &asn_DEF_BCCH_DL_SCH_Message, &bcchMsg);
+      /* NR_UE_TimersAndConstants */
+      DU_ALLOC(sib1Msg->ue_TimersAndConstants, sizeof(sib1Msg->ue_TimersAndConstants));
+      sib1Msg->ue_TimersAndConstants->t300 = 3;
+      sib1Msg->ue_TimersAndConstants->t301 = 3;
+      sib1Msg->ue_TimersAndConstants->t310 = 6;
+      sib1Msg->ue_TimersAndConstants->n310 = 6;
+      sib1Msg->ue_TimersAndConstants->t311 = 1;
+      sib1Msg->ue_TimersAndConstants->n311 = 0;
+      sib1Msg->ue_TimersAndConstants->t319 = 3;
+      sib1Msg = bcchMsg.message.choice.c1->choice.systemInformationBlockType1;
 
-      /* Encode the F1SetupRequest type as APER */
+      xer_fprint(stdout, &asn_DEF_BCCH_DL_SCH_Message, &bcchMsg);
+      /* Encode the SIB1 type as UPER */
       memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = uper_encode(&asn_DEF_BCCH_DL_SCH_Message, 0, &bcchMsg, PrepFinalEncBuf,\
@@ -2567,6 +2585,22 @@ uint8_t BuildSib1Msg()
                "unknown");
          break;
       }
+      // printf("\n[NTUST] Unit test decode -> %d\n",encBufSize);
+
+      // for (int i=0; i<encBufSize; i++) 
+      //    printf("%x ", (unsigned char)((unsigned char *)encBuf)[i]);
+      // printf("\n");
+
+      // BCCH_DL_SCH_Message_t *bcch_message = NULL;
+      // asn_dec_rval_t rval = uper_decode(NULL, &asn_DEF_BCCH_DL_SCH_Message, &bcch_message, encBuf, encBufSize, 0, 0);
+      // if(rval.code == RC_FAIL || rval.code == RC_WMORE)
+      // {
+      //    DU_LOG("\nERROR  -->  ASN decode failed\n");
+      //    // return RFAILED;
+      // }
+      // xer_fprint(stdout, &asn_DEF_BCCH_DL_SCH_Message, bcch_message);
+      // printf("\n\n\n\n");
+
 #ifdef DEBUG_ASN_PRINT
       for(int i=0; i< encBufSize; i++)
       {

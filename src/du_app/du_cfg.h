@@ -143,7 +143,13 @@
 #define SSB_MULT_CARRIER_BAND FALSE
 #define MULT_CELL_CARRIER FALSE
 #define FREQ_LOC_BW  28875             /* DL frequency location and bandwidth. Spec 38.508 Table 4.3.1.0B-1*/
-#define UL_P_MAX  23
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+#define UL_P_MAX  20                
+#else 
+#define UL_P_MAX  23                   
+#endif
+/* ======================================== */
 #define DMRS_TYPE_A_POS 2
 #define NUM_SYMBOLS_PER_SLOT 14       /* Number of symbols within a slot */
 #define CORESET0_END_PRB   48
@@ -160,7 +166,7 @@
    #endif
 #endif
 #define PRACH_MAX_PRB  24  /* As per (spec 38.211-Table 6.3.3.2-1), max allocated PRBs can go upto 24 */
-#define PRACH_FREQ_START  (MAX_NUM_RB - PRACH_MAX_PRB) /* In order to allocate PRACH from end of the resource grid */
+#define PRACH_FREQ_START  0//(MAX_NUM_RB - PRACH_MAX_PRB) /* In order to allocate PRACH from end of the resource grid */
 #define PRACH_SEQ_LEN SHORT_SEQUENCE
 #define PRACH_SUBCARRIER_SPACING NR_SCS
 #define PRACH_RESTRICTED_SET_CFG 0
@@ -178,14 +184,23 @@
 #define UNUSED_ROOT_SEQ 1
 #ifdef NFAPI
 #define SSB_PER_RACH 3
+#define CB_PREAMBLE_PER_SSB 60
 #else 
 #define SSB_PER_RACH 1
-#endif
 #define CB_PREAMBLE_PER_SSB 8
+#endif
 #define PRACH_MULT_CARRIER_BAND FALSE
+#ifdef NFAPI
+#define PRACH_PREAMBLE_RCVD_TGT_PWR  -96   
+#else 
 #define PRACH_PREAMBLE_RCVD_TGT_PWR  -74   
+#endif
 #define NUM_RA_PREAMBLE  63
+#ifdef NFAPI
+#define RSRP_THRESHOLD_SSB   19
+#else
 #define RSRP_THRESHOLD_SSB   31
+#endif
 
 #ifdef NR_TDD
 #define TDD_PERIODICITY TX_PRDCTY_MS_5 
@@ -237,13 +252,27 @@
 
 /* MACRO Define for PUSCH Configuration */
 #define MAX_UL_ALLOC 16
+#ifdef NFAPI
+#define PUSCH_K2_CFG1  6
+#define PUSCH_K2_CFG2  6
+#define PUSCH_K2_CFG3  6
+#define PUSCH_K2_CFG4  7
+#define PUSCH_START_SYMBOL_CFG1  0
+#define PUSCH_LENGTH_SYMBOL_CFG1 13
+#define PUSCH_START_SYMBOL_CFG2  0
+#define PUSCH_LENGTH_SYMBOL_CFG2 12
+#define PUSCH_START_SYMBOL  10
+#define PUSCH_LENGTH_SYMBOL 3
+#define PUSCH_MSG3_DELTA_PREAMBLE 1
+#define PUSCH_P0_NOMINAL_WITH_GRANT -90
+#else
 #define PUSCH_K2_CFG1  4
 #define PUSCH_K2_CFG2  5
 #define PUSCH_START_SYMBOL  3
 #define PUSCH_LENGTH_SYMBOL 11
-
 #define PUSCH_MSG3_DELTA_PREAMBLE 0
 #define PUSCH_P0_NOMINAL_WITH_GRANT -70
+#endif
 #define PUSCH_TRANSFORM_PRECODER    1      /* 1: Disabled */
 #define PUSCH_MAX_MIMO_LAYERS       1
 #define PUSCH_PROCESS_TYPE2_ENABLED false
@@ -251,8 +280,11 @@
 /* Macro define for PUCCH Configuration */
 #define PUCCH_RSRC_COMMON  0
 #define PUCCH_GROUP_HOPPING 0 /* Neither sequence hopping nor group hopping */
+#ifdef NFAPI
+#define PUCCH_P0_NOMINAL   -90
+#else
 #define PUCCH_P0_NOMINAL   -74
-
+#endif
 /* MACRO defines for TDD DL-UL Configuration */
 #define NUM_DL_SLOTS 7
 #define NUM_DL_SYMBOLS 6 

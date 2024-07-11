@@ -535,40 +535,40 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    pdcchCfg.numCandAggLvl1 = SearchSpace__nrofCandidates__aggregationLevel1_n0;
    pdcchCfg.numCandAggLvl2 = SearchSpace__nrofCandidates__aggregationLevel2_n0;
    pdcchCfg.numCandAggLvl4 = SearchSpace__nrofCandidates__aggregationLevel4_n1;
+   pdcchCfg.numCandAggLvl8 = SearchSpace__nrofCandidates__aggregationLevel8_n0;
 #else
    pdcchCfg.numCandAggLvl1 = SearchSpace__nrofCandidates__aggregationLevel1_n8;
    pdcchCfg.numCandAggLvl2 = SearchSpace__nrofCandidates__aggregationLevel2_n4;
    pdcchCfg.numCandAggLvl4 = SearchSpace__nrofCandidates__aggregationLevel4_n2;
+   pdcchCfg.numCandAggLvl8 = SearchSpace__nrofCandidates__aggregationLevel8_n1;
 #endif
 /* ======================================== */
-   pdcchCfg.numCandAggLvl8 = SearchSpace__nrofCandidates__aggregationLevel8_n1;
    pdcchCfg.numCandAggLvl16 = SearchSpace__nrofCandidates__aggregationLevel16_n0;
    pdcchCfg.searchSpcType = SearchSpace__searchSpaceType_PR_common;
    pdcchCfg.commSrchSpcDciFrmt = PDCCH_SERACH_SPACE_DCI_FORMAT;
-   pdcchCfg.searchSpcSib1 = PDCCH_SEARCH_SPACE_ID_SIB1;
+   pdcchCfg.searchSpcSib1 = 0;//PDCCH_SEARCH_SPACE_ID_SIB1;
    pdcchCfg.pagingSearchSpc = PDCCH_SEARCH_SPACE_ID_PAGING;
    pdcchCfg.raSearchSpc = PDCCH_SEARCH_SPACE_ID_PAGING;
    srvCellCfgComm->dlCfg.pdcchCfg = pdcchCfg;
 
    /* Configuring PDSCH Config Common For SIB1 */
-   pdschCfg.present = BWP_DownlinkCommon__pdsch_ConfigCommon_PR_setup;
+   pdschCfg.present = SetupRelease_PDSCH_ConfigCommon_PR_setup;
    pdschCfg.numTimeDomRsrcAlloc = 2;
    pdschCfg.timeDomAlloc[0].k0 = PDSCH_K0_CFG1;
    pdschCfg.timeDomAlloc[0].mapType = PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
-/* ======== small cell integration ======== */
-#ifdef NFAPI
-   pdschCfg.timeDomAlloc[0].sliv = 40;
-#else
-   pdschCfg.timeDomAlloc[0].sliv = calcSliv(PDSCH_START_SYMBOL,PDSCH_LENGTH_SYMBOL);
-#endif
-/* ======================================== */
-
    pdschCfg.timeDomAlloc[1].k0 = PDSCH_K0_CFG2;
    pdschCfg.timeDomAlloc[1].mapType = PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
 /* ======== small cell integration ======== */
 #ifdef NFAPI
+   pdschCfg.numTimeDomRsrcAlloc = 2;
+   pdschCfg.timeDomAlloc[0].sliv = 40;
    pdschCfg.timeDomAlloc[1].sliv = 54;
+   pdschCfg.timeDomAlloc[2].k0 = PDSCH_K0_CFG2;
+   pdschCfg.timeDomAlloc[2].mapType = PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
+   pdschCfg.timeDomAlloc[2].sliv = 57;
 #else
+   pdschCfg.numTimeDomRsrcAlloc = 2;
+   pdschCfg.timeDomAlloc[0].sliv = calcSliv(PDSCH_START_SYMBOL,PDSCH_LENGTH_SYMBOL);
    pdschCfg.timeDomAlloc[1].sliv = calcSliv(PDSCH_START_SYMBOL,PDSCH_LENGTH_SYMBOL);
 #endif
 /* ======================================== */
@@ -589,16 +589,24 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 /* ======== small cell integration ======== */
 #ifdef NFAPI
    pcchCfg.nAndPagingFrmOffsetType = PCCH_Config__nAndPagingFrameOffset_PR_quarterT;
+   pcchCfg.pageFrameOffset = 1;
 #else
    pcchCfg.nAndPagingFrmOffsetType = PCCH_Config__nAndPagingFrameOffset_PR_oneT;
+   pcchCfg.pageFrameOffset = 0;
 #endif
 /* ======================================== */
-   pcchCfg.pageFrameOffset = 0;
    pcchCfg.ns = convertNsEnumToValue(PCCH_Config__ns_one);
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   pcchCfg.firstPDCCHMontioringType = PCCH_Config__firstPDCCH_MonitoringOccasionOfPO_PR_sCS120KHZoneT_SCS60KHZhalfT_SCS30KHZquarterT_SCS15KHZoneEighthT;
+   memset(pcchCfg.firstPDCCHMontioringInfo, 0, sizeof(uint16_t));
+   pcchCfg.firstPDCCHMontioringInfo[0] = 0;
+#else
    pcchCfg.firstPDCCHMontioringType = PCCH_Config__firstPDCCH_MonitoringOccasionOfPO_PR_sCS30KHZoneT_SCS15KHZhalfT;
    memset(pcchCfg.firstPDCCHMontioringInfo, 0, sizeof(uint16_t));
    pcchCfg.firstPDCCHMontioringInfo[0] = 44;
-   
+#endif
+/* ======================================== */
    srvCellCfgComm->dlCfg.pcchCfg = pcchCfg;
 
 
@@ -639,7 +647,13 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 #endif
 /* ======================================== */
    rachCfg.pwrRampingStep = RACH_ConfigGeneric__powerRampingStep_dB2;
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+   rachCfg.raRspWindow = RACH_ConfigGeneric__ra_ResponseWindow_sl20;
+#else
    rachCfg.raRspWindow = RACH_ConfigGeneric__ra_ResponseWindow_sl10;
+#endif
+/* ======================================== */
    rachCfg.numRaPreamble = NUM_RA_PREAMBLE;
    rachCfg.numSsbPerRachOcc = RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_one;
    rachCfg.numCbPreamblePerSsb = CB_PREAMBLE_PER_SSB;
@@ -653,13 +667,19 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 
    /* Configuring PUSCH Config Common for SIB1 */
    puschCfg.puschCfgPresent = SetupRelease_PUSCH_ConfigCommon_PR_setup;
-   puschCfg.numTimeDomRsrcAlloc = 2;
+   puschCfg.numTimeDomRsrcAlloc = 4;
    puschCfg.timeDomAllocList[0].k2 = PUSCH_K2_CFG1;
-   puschCfg.timeDomAllocList[0].mapType = PUSCH_TimeDomainResourceAllocation__mappingType_typeA;
-   puschCfg.timeDomAllocList[0].sliv = calcSliv(PUSCH_START_SYMBOL,PUSCH_LENGTH_SYMBOL);
+   puschCfg.timeDomAllocList[0].mapType = PUSCH_TimeDomainResourceAllocation__mappingType_typeB;
+   puschCfg.timeDomAllocList[0].sliv = calcSliv(PUSCH_START_SYMBOL_CFG1,PUSCH_LENGTH_SYMBOL_CFG1);
    puschCfg.timeDomAllocList[1].k2 = PUSCH_K2_CFG2;
-   puschCfg.timeDomAllocList[1].mapType = PUSCH_TimeDomainResourceAllocation__mappingType_typeA;
-   puschCfg.timeDomAllocList[1].sliv = calcSliv(PUSCH_START_SYMBOL,PUSCH_LENGTH_SYMBOL);
+   puschCfg.timeDomAllocList[1].mapType = PUSCH_TimeDomainResourceAllocation__mappingType_typeB;
+   puschCfg.timeDomAllocList[1].sliv = calcSliv(PUSCH_START_SYMBOL_CFG2,PUSCH_LENGTH_SYMBOL_CFG2);
+   puschCfg.timeDomAllocList[2].k2 = PUSCH_K2_CFG3;
+   puschCfg.timeDomAllocList[2].mapType = PUSCH_TimeDomainResourceAllocation__mappingType_typeB;
+   puschCfg.timeDomAllocList[2].sliv = calcSliv(PUSCH_START_SYMBOL,PUSCH_LENGTH_SYMBOL);
+   puschCfg.timeDomAllocList[3].k2 = PUSCH_K2_CFG4;
+   puschCfg.timeDomAllocList[3].mapType = PUSCH_TimeDomainResourceAllocation__mappingType_typeB;
+   puschCfg.timeDomAllocList[3].sliv = calcSliv(PUSCH_START_SYMBOL,PUSCH_LENGTH_SYMBOL);
    puschCfg.msg3DeltaPreamble = PUSCH_MSG3_DELTA_PREAMBLE;
    puschCfg.p0NominalWithGrant = PUSCH_P0_NOMINAL_WITH_GRANT;
    srvCellCfgComm->ulCfg.puschCfg = puschCfg;
@@ -680,7 +700,7 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    tddCfg.numUlSymbols = NUM_UL_SYMBOLS;
    srvCellCfgComm->tddCfg = tddCfg;
 
-   srvCellCfgComm->ssbPosInBurst = 192;
+   srvCellCfgComm->ssbPosInBurst = 128; //192
    srvCellCfgComm->ssbPrdServingCell = SSB_PERIODICITY;
    srvCellCfgComm->ssPbchBlockPwr = SSB_PBCH_PWR;
 
