@@ -1,3 +1,25 @@
 # documentation
 .tox
 docs/_build/
+libs/*
+# Ignore built files for l2
+*.a
+build/odu/bin/odu/odu
+build/odu/bin/odu/
+build/odu/bin/ric_stub/
+build/odu/lib/odu/*.a
+build/odu/lib/ric_stub/*.a
+libs/*.a
+libs/libasn_rrc.a
+libs/libphystub.a
+libs/librg.a
+libs/libduapp.a
+libs/libnfapi.a
+libs/libnfapi_vnf.a
+build/odu/bin/cu_stub/cu_stub
+build/odu/bin/cu_stub/
+build/odu/obj/odu/
+build/odu/obj/odu/*.o
+build/odu/obj/ric_stub/
+build/odu/obj/ric_stub/*.o
+bin/odu/
