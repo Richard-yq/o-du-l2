@@ -116,7 +116,7 @@ void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
    {
       bytePart1 = (uint8_t)val;
       bytePart1 = (~((~0) << valSize)) & bytePart1;
-      buf[*bytePos] |= bytePart1;
+      buf[*bytePos] |= bytePart1 << (8-*bitPos-valSize);
       *bitPos += valSize;
    }
    else if(*bitPos + valSize > 8)
@@ -125,8 +125,8 @@ void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
       bytePart1Size = 8 - *bitPos;
       bytePart2Size = valSize - bytePart1Size;
 
-      bytePart1 = ((~((~0) << bytePart1Size)) & temp) << *bitPos;
-      bytePart2 = val >> bytePart1Size;
+      bytePart1 = (val >> bytePart2Size) & (~((~0) << bytePart1Size));
+      bytePart2 = ((~((~0) << bytePart2Size)) & val);
 
       buf[*bytePos] |= bytePart1;
       (*bytePos)--;
