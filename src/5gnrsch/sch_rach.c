@@ -921,16 +921,21 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    }
 
    /* fill BWP */
-   bwp->freqAlloc.numPrb   = initialBwp->bwp.freqAlloc.numPrb;
-   bwp->freqAlloc.startPrb = initialBwp->bwp.freqAlloc.startPrb;
+   bwp->freqAlloc.numPrb   = 48;//initialBwp->bwp.freqAlloc.numPrb;
+   bwp->freqAlloc.startPrb = 27;//initialBwp->bwp.freqAlloc.startPrb;
    bwp->subcarrierSpacing  = initialBwp->bwp.scs;
    bwp->cyclicPrefix       = initialBwp->bwp.cyclicPrefix;
 
    /* fill the PDCCH PDU */
    pdcch->coresetCfg.startSymbolIndex = firstSymbol;
    pdcch->coresetCfg.durationSymbols = numSymbols;
-   memcpy(pdcch->coresetCfg.freqDomainResource, \
-      cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
+   coreset0Idx = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.coresetId;
+   numRbs = coresetIdxTable[coreset0Idx][1];
+   int CORESET0_inside_rbstart = 0;
+   fillCoresetFeqDomAllocMap(((CORESET0_inside_rbstart)/6), \
+                                  (numRbs/6), pdcch->coresetCfg.freqDomainResource);
+   // memcpy(pdcch->coresetCfg.freqDomainResource, \
+   //    cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
 
    pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
    pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
@@ -957,19 +962,19 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
-   pdsch->rnti = cell->raReq[ueId-1]->raRnti; /* RA-RNTI */
+   pdsch->rnti = 267;//cell->raReq[ueId-1]->raRnti; /* RA-RNTI */
    pdsch->pduIndex = 0;
    pdsch->numCodewords = 1;
    for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
    {
-      pdsch->codeword[cwCount].targetCodeRate = 308;
+      pdsch->codeword[cwCount].targetCodeRate = 1200;//308;
       pdsch->codeword[cwCount].qamModOrder = 2;
-      pdsch->codeword[cwCount].mcsIndex = mcs; /* mcs configured to 4 */
+      pdsch->codeword[cwCount].mcsIndex = 0;//mcs; /* mcs configured to 4 */
       pdsch->codeword[cwCount].mcsTable = 0;   /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
       /* RAR PDU length and FAPI payload header length */
       tbSize = schCalcTbSize(RAR_PAYLOAD_SIZE + TX_PAYLOAD_HDR_LEN);
-      pdsch->codeword[cwCount].tbSize = tbSize;
+      pdsch->codeword[cwCount].tbSize = 11;//tbSize;
    }
    pdsch->dataScramblingId = cell->cellCfg.phyCellId;
    pdsch->numLayers = 1;
@@ -979,20 +984,20 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    pdsch->dmrs.dmrsConfigType = 0; /* type-1 */
    pdsch->dmrs.dlDmrsScramblingId = cell->cellCfg.phyCellId;
    pdsch->dmrs.scid = 0;
-   pdsch->dmrs.numDmrsCdmGrpsNoData = 1;
-   pdsch->dmrs.dmrsPorts = 0;
+   pdsch->dmrs.numDmrsCdmGrpsNoData = 2;// 1;
+   pdsch->dmrs.dmrsPorts = 1;//0;
    pdsch->dmrs.mappingType      = DMRS_MAP_TYPE_A;  /* Type-A */
    pdsch->dmrs.nrOfDmrsSymbols  = NUM_DMRS_SYMBOLS;
    pdsch->dmrs.dmrsAddPos       = DMRS_ADDITIONAL_POS;
 
    pdsch->pdschTimeAlloc.rowIndex = k0Index;
-   pdsch->pdschTimeAlloc.startSymb = initialBwp->pdschCommon.timeDomRsrcAllocList[k0Index].startSymbol;
-   pdsch->pdschTimeAlloc.numSymb = initialBwp->pdschCommon.timeDomRsrcAllocList[k0Index].lengthSymbol;
+   pdsch->pdschTimeAlloc.startSymb = 48;//initialBwp->pdschCommon.timeDomRsrcAllocList[k0Index].startSymbol;
+   pdsch->pdschTimeAlloc.numSymb = 27;//initialBwp->pdschCommon.timeDomRsrcAllocList[k0Index].lengthSymbol;
 
    pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
    pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
-   pdsch->pdschFreqAlloc.startPrb = MAX_NUM_RB;
-   pdsch->pdschFreqAlloc.numPrb = \
+   pdsch->pdschFreqAlloc.startPrb = 0;//MAX_NUM_RB;
+   pdsch->pdschFreqAlloc.numPrb = 8;//\
       schCalcNumPrb(tbSize, mcs, initialBwp->pdschCommon.timeDomRsrcAllocList[k0Index].lengthSymbol);
 
    /* Find total symbols occupied including DMRS */
@@ -1020,8 +1025,8 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
       return RFAILED;
    }
 
-   pdsch->beamPdschInfo.numPrgs = 1;
-   pdsch->beamPdschInfo.prgSize = 1;
+   pdsch->beamPdschInfo.numPrgs = 0;//1;
+   pdsch->beamPdschInfo.prgSize = 0;//1;
    pdsch->beamPdschInfo.digBfInterfaces = 0;
    pdsch->beamPdschInfo.prg[0].pmIdx = 0;
    pdsch->beamPdschInfo.prg[0].beamIdx[0] = 0;

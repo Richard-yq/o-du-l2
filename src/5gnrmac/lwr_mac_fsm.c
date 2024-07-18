@@ -4646,9 +4646,11 @@ void OAI_OSC_fillRarDlDciPdu(nfapi_nr_dl_dci_pdu_t *dlDciPtr, PdcchCfg *rarPdcch
        * RBLen = length of contiguously allocted RBs
        * Spec 38.214 Sec 5.1.2.2.2
        */
-
-      /* TODO: Fill values of coreset0Size, rbStart and rbLen */
-      coreset0Size= rarPdcchInfo->coresetCfg.coreSetSize;
+/* ======== small cell integration ======== */
+#ifdef NFAPI
+      rbStart = 0;
+      rbLen = 8;
+#else
       rbStart = rarPdcchInfo->dci[0].pdschCfg.pdschFreqAlloc.startPrb;
       rbLen = rarPdcchInfo->dci[0].pdschCfg.pdschFreqAlloc.numPrb;
 #endif
@@ -4668,7 +4670,7 @@ void OAI_OSC_fillRarDlDciPdu(nfapi_nr_dl_dci_pdu_t *dlDciPtr, PdcchCfg *rarPdcch
       }
 
       /* Fetching DCI field values */
-      timeDomResAssign = rarPdcchInfo->dci[0].pdschCfg.pdschTimeAlloc.rowIndex;
+      timeDomResAssign = 2;//rarPdcchInfo->dci.pdschCfg.pdschTimeAlloc.rowIndex;
       VRB2PRBMap       = rarPdcchInfo->dci[0].pdschCfg.pdschFreqAlloc.vrbPrbMapping;
       modNCodScheme    = rarPdcchInfo->dci[0].pdschCfg.codeword[0].mcsIndex;
       tbScaling        = 0; /* configured to 0 scaling */
