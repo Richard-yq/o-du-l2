@@ -4651,16 +4651,20 @@ void OAI_OSC_fillRarDlDciPdu(nfapi_nr_dl_dci_pdu_t *dlDciPtr, PdcchCfg *rarPdcch
       coreset0Size= rarPdcchInfo->coresetCfg.coreSetSize;
       rbStart = rarPdcchInfo->dci[0].pdschCfg.pdschFreqAlloc.startPrb;
       rbLen = rarPdcchInfo->dci[0].pdschCfg.pdschFreqAlloc.numPrb;
+#endif
+/* ======================================== */
+      /* TODO: Fill values of coreset0Size, rbStart and rbLen */
+      coreset0Size= rarPdcchInfo->coresetCfg.coreSetSize;
 
-      if((rbLen >=1) && (rbLen <= coreset0Size - rbStart))
-      {
-	 if((rbLen - 1) <= floor(coreset0Size / 2))
-	    freqDomResAssign = (coreset0Size * (rbLen-1)) + rbStart;
-	 else
-	    freqDomResAssign = (coreset0Size * (coreset0Size - rbLen + 1)) \
-			       + (coreset0Size - 1 - rbStart);
 
-	 freqDomResAssignSize = ceil(log2(coreset0Size * (coreset0Size + 1) / 2));
+      int BWPsize = coreset0Size;
+      if((rbLen >=1) && (rbLen <= BWPsize - rbStart)) {
+         if((rbLen - 1) <= floor(BWPsize / 2))
+            freqDomResAssign = (BWPsize * (rbLen-1)) + rbStart;
+         else
+            freqDomResAssign = (BWPsize * (BWPsize - rbLen + 1)) \
+                     + (BWPsize - 1 - rbStart);
+         freqDomResAssignSize = ceil(log2(BWPsize * (BWPsize + 1) / 2));
       }
 
       /* Fetching DCI field values */
@@ -4671,20 +4675,21 @@ void OAI_OSC_fillRarDlDciPdu(nfapi_nr_dl_dci_pdu_t *dlDciPtr, PdcchCfg *rarPdcch
       reserved         = 0;
 
       /* Reversing bits in each DCI field */
-      freqDomResAssign = reverseBits(freqDomResAssign, freqDomResAssignSize);
-      timeDomResAssign = reverseBits(timeDomResAssign, timeDomResAssignSize);
-      VRB2PRBMap       = reverseBits(VRB2PRBMap, VRB2PRBMapSize);
-      modNCodScheme    = reverseBits(modNCodScheme, modNCodSchemeSize);
-      tbScaling        = reverseBits(tbScaling, tbScalingSize); 
+      // freqDomResAssign = reverseBits(freqDomResAssign, freqDomResAssignSize);
+      // timeDomResAssign = reverseBits(timeDomResAssign, timeDomResAssignSize);
+      // VRB2PRBMap       = reverseBits(VRB2PRBMap, VRB2PRBMapSize);
+      // modNCodScheme    = reverseBits(modNCodScheme, modNCodSchemeSize);
+      // tbScaling        = reverseBits(tbScaling, tbScalingSize); 
 
       /* Calulating total number of bytes in buffer */
       dlDciPtr->PayloadSizeBits = freqDomResAssignSize + timeDomResAssignSize\
 				  + VRB2PRBMapSize + modNCodSchemeSize + tbScalingSize + reservedSize;
 
       numBytes = dlDciPtr->PayloadSizeBits / 8;
-      if(dlDciPtr->PayloadSizeBits % 8)
-	 numBytes += 1;
-
+      if(dlDciPtr->PayloadSizeBits % 8){
+         numBytes += 1;
+         bitPos = 8 - (dlDciPtr->PayloadSizeBits % 8);
+      }
       if(numBytes > FAPI_DCI_PAYLOAD_BYTE_LEN)
       {
 	 DU_LOG("\nERROR  -->  LWR_MAC : Total bytes for DCI is more than expected");
@@ -4696,7 +4701,6 @@ void OAI_OSC_fillRarDlDciPdu(nfapi_nr_dl_dci_pdu_t *dlDciPtr, PdcchCfg *rarPdcch
 	 dlDciPtr->Payload[bytePos] = 0;
 
       bytePos = numBytes - 1;
-      bitPos = 0;
 
       /* Packing DCI format fields */
       fillDlDciPayload(dlDciPtr->Payload, &bytePos, &bitPos,\
