@@ -27,7 +27,7 @@
 #define NFAPI_PNF_PARAM_GENERAL_OUI_LENGTH 3
 #define NFAPI_MAX_NUM_RF_BANDS 16
 
-#define NFAPI_MAX_PACKED_MESSAGE_SIZE 8192
+#define NFAPI_MAX_PACKED_MESSAGE_SIZE 32768
 
 // The following definition control the size of arrays used in the interface.
 // These may be changed if desired. They are used in the encoder to make sure 
@@ -2732,7 +2732,6 @@ typedef struct {
 } nfapi_cqi_indication_rel8_t;
 #define NFAPI_CQI_INDICATION_REL8_TAG 0x202f
 
-#define MAX_NUM_CCs 1
 #define NFAPI_CC_MAX MAX_NUM_CCs
 typedef struct {
 	nfapi_tl_t tl;

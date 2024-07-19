@@ -328,8 +328,8 @@ static uint8_t pack_dl_tti_pdsch_pdu_rel15_value(void *tlv, uint8_t **ppWritePac
   }
   // TODO Add TX power info
   // Hardcoded values that represent 0db
-  if (!(push8(8, ppWritePackedMsg, end) && // powerControlOffset
-        push8(1, ppWritePackedMsg, end))) { // powerControlOffsetSS
+  if (!(push8(0, ppWritePackedMsg, end) && // powerControlOffset
+        push8(0, ppWritePackedMsg, end))) { // powerControlOffsetSS
     return 0;
   }
 
@@ -2028,12 +2028,14 @@ static uint8_t pack_tx_data_pdu_list_value(void *tlv, uint8_t **ppWritePackedMsg
   uint16_t total_number_of_tlvs = value->num_TLV;
 
   for (; i < total_number_of_tlvs; ++i) {
-    if (!(push16(value->TLVs[i].tag, ppWritePackedMsg, end) && push16(value->TLVs[i].length, ppWritePackedMsg, end)))
+    if (!(push16(value->TLVs[i].tag, ppWritePackedMsg, end) && push32(value->TLVs[i].length, ppWritePackedMsg, end)))
       return 0;
+
     switch (value->TLVs[i].tag) {
       case 0: {
-        if (!pusharray32(value->TLVs[i].value.direct, 16384, (value->TLVs[i].length + 3) / 4, ppWritePackedMsg, end)) {
-          NFAPI_TRACE(NFAPI_TRACE_ERROR, "%s():%d. value->TLVs[i].length %d \n", __FUNCTION__, __LINE__, value->TLVs[i].length);
+        uint32_t len32 = (value->TLVs[i].length + 3) / 4;
+        if (!pusharray32(value->TLVs[i].value.direct, sizeof(value->TLVs[i].value.direct), len32, ppWritePackedMsg, end)) {
+          NFAPI_TRACE(NFAPI_TRACE_ERROR, "%s():%d. value->TLVs[i].length %d len32 %u max %lu pos %p end %p bytes %lu\n", __FUNCTION__, __LINE__, value->TLVs[i].length, len32, sizeof(value->TLVs[i].value.direct), *ppWritePackedMsg, end, end - *ppWritePackedMsg);
           return 0;
         }
         break;
@@ -6115,18 +6117,19 @@ static uint8_t unpack_nr_rx_data_indication_body(nfapi_nr_rx_data_pdu_t *value,
                                                  uint8_t *end,
                                                  nfapi_p7_codec_config_t *config)
 {
-if (!(pull32(ppReadPackedMsg, &value->handle, end) && pull16(ppReadPackedMsg, &value->rnti, end)
-      && pull8(ppReadPackedMsg, &value->harq_id, end) && pull16(ppReadPackedMsg, &value->pdu_length, end)
-      && pull8(ppReadPackedMsg, &value->ul_cqi, end) && pull16(ppReadPackedMsg, &value->timing_advance, end)
-      && pull16(ppReadPackedMsg, &value->rssi, end)))
-      return 0;
+  uint16_t pdu_len = 0;
+  if (!(pull32(ppReadPackedMsg, &value->handle, end) && pull16(ppReadPackedMsg, &value->rnti, end)
+        && pull8(ppReadPackedMsg, &value->harq_id, end) && pull16(ppReadPackedMsg, &pdu_len, end)
+        && pull8(ppReadPackedMsg, &value->ul_cqi, end) && pull16(ppReadPackedMsg, &value->timing_advance, end)
+        && pull16(ppReadPackedMsg, &value->rssi, end)))
+    return 0;
 
-uint32_t length = value->pdu_length;
-value->pdu = nfapi_p7_allocate(sizeof(*value->pdu) * length, config);
-if (pullarray8(ppReadPackedMsg, value->pdu, length, length, end) == 0) {
-      NFAPI_TRACE(NFAPI_TRACE_ERROR, "%s pullarray8 failure\n", __FUNCTION__);
-      return 0;
-}
+  value->pdu_length = pdu_len;
+  value->pdu = nfapi_p7_allocate(sizeof(*value->pdu) * pdu_len, config);
+  if (pullarray8(ppReadPackedMsg, value->pdu, pdu_len, pdu_len, end) == 0) {
+    NFAPI_TRACE(NFAPI_TRACE_ERROR, "%s pullarray8 failure\n", __FUNCTION__);
+    return 0;
+  }
 return 1;
 }
 
@@ -6343,14 +6346,11 @@ static uint8_t unpack_nr_rach_indication_body(nfapi_nr_prach_indication_pdu_t *v
     return 0;
   }
 
-  if (value->num_preamble > 0) {
-    value->preamble_list = nfapi_p7_allocate(sizeof(*value->preamble_list) * value->num_preamble, config);
-    for (int i = 0; i < value->num_preamble; i++) {
-      nfapi_nr_prach_indication_preamble_t *preamble = &(value->preamble_list[i]);
-      if (!(pull8(ppReadPackedMsg, &preamble->preamble_index, end) && pull16(ppReadPackedMsg, &preamble->timing_advance, end)
-            && pull32(ppReadPackedMsg, &preamble->preamble_pwr, end))) {
-        return 0;
-      }
+  for (int i = 0; i < value->num_preamble; i++) {
+    nfapi_nr_prach_indication_preamble_t *preamble = &(value->preamble_list[i]);
+    if (!(pull8(ppReadPackedMsg, &preamble->preamble_index, end) && pull16(ppReadPackedMsg, &preamble->timing_advance, end)
+          && pull32(ppReadPackedMsg, &preamble->preamble_pwr, end))) {
+      return 0;
     }
   }
   return 1;
