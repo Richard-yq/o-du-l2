@@ -263,7 +263,7 @@ ASN_MODULE_SRCS=	\
 	../F1_output/PDCPSNLength.c	\
 	../F1_output/PDUSessionID.c	\
 	../F1_output/Ph-InfoSCG.c	\
-	../F1_output/PLMN-IdentityF1AP.c	\
+	../F1_output/PLMN-Identity.c	\
 	../F1_output/Pre-emptionCapability.c	\
 	../F1_output/Pre-emptionVulnerability.c	\
 	../F1_output/PriorityLevel.c	\
@@ -477,7 +477,7 @@ ASN_MODULE_HDRS=	\
 	../F1_output/ULRRCMessageTransfer.h	\
 	../F1_output/PrivateMessage.h	\
 	../F1_output/SystemInformationDeliveryCommand.h	\
-	../F1_output/PagingF1AP.h	\
+	../F1_output/Paging.h	\
 	../F1_output/PagingCell-list.h	\
 	../F1_output/Notify.h	\
 	../F1_output/DRB-Notify-List.h	\
@@ -646,7 +646,7 @@ ASN_MODULE_HDRS=	\
 	../F1_output/PDCPSNLength.h	\
 	../F1_output/PDUSessionID.h	\
 	../F1_output/Ph-InfoSCG.h	\
-	../F1_output/PLMN-IdentityF1AP.h	\
+	../F1_output/PLMN-Identity.h	\
 	../F1_output/Pre-emptionCapability.h	\
 	../F1_output/Pre-emptionVulnerability.h	\
 	../F1_output/PriorityLevel.h	\

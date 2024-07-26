@@ -153,7 +153,7 @@ static const asn_ioc_cell_t asn_IOS_F1AP_ELEMENTARY_PROCEDURES_1_rows[] = {
 	{ "&UnsuccessfulOutcome",  },
 	{ "&procedureCode", aioc__value, &asn_DEF_ProcedureCode, &asn_VAL_19_id_SystemInformationDeliveryCommand },
 	{ "&criticality", aioc__value, &asn_DEF_Criticality, &asn_VAL_19_ignore },
-	{ "&InitiatingMessage", aioc__type, &asn_DEF_PagingF1AP },
+	{ "&InitiatingMessage", aioc__type, &asn_DEF_Paging },
 	{ "&SuccessfulOutcome",  },
 	{ "&UnsuccessfulOutcome",  },
 	{ "&procedureCode", aioc__value, &asn_DEF_ProcedureCode, &asn_VAL_20_id_Paging },

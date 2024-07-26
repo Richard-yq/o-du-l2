@@ -13,7 +13,7 @@
 
 /* Including external dependencies */
 #include "CG-ConfigInfo.h"
-#include "UE-CapabilityRAT-ContainerListF1AP.h"
+#include "UE-CapabilityRAT-ContainerList.h"
 #include "MeasConfig.h"
 #include <constr_SEQUENCE.h>
 
@@ -27,7 +27,7 @@ struct ProtocolExtensionContainer;
 /* CUtoDURRCInformation */
 typedef struct CUtoDURRCInformation {
 	CG_ConfigInfo_t	*cG_ConfigInfo;	/* OPTIONAL */
-	UE_CapabilityRAT_ContainerListF1AP_t	*uE_CapabilityRAT_ContainerList;	/* OPTIONAL */
+	UE_CapabilityRAT_ContainerList_t	*uE_CapabilityRAT_ContainerList;	/* OPTIONAL */
 	MeasConfig_t	*measConfig;	/* OPTIONAL */
 	struct ProtocolExtensionContainer_4624P16	*iE_Extensions;	/* OPTIONAL */
 	/*

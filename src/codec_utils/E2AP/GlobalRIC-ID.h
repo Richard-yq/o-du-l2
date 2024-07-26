@@ -12,7 +12,7 @@
 #include <asn_application.h>
 
 /* Including external dependencies */
-#include "PLMN-IdentityE2AP.h"
+#include "PLMN-Identity.h"
 #include <BIT_STRING.h>
 #include <constr_SEQUENCE.h>
 
@@ -22,7 +22,7 @@ extern "C" {
 
 /* GlobalRIC-ID */
 typedef struct GlobalRIC_ID {
-	PLMN_IdentityE2AP_t	 pLMN_Identity;
+	PLMN_Identity_t	 pLMN_Identity;
 	BIT_STRING_t	 ric_ID;
 	/*
 	 * This type is extensible,

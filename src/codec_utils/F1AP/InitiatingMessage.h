@@ -52,7 +52,7 @@
 #include "PrivateMessage.h"
 #include "InitialULRRCMessageTransfer.h"
 #include "SystemInformationDeliveryCommand.h"
-#include "PagingF1AP.h"
+#include "Paging.h"
 #include "Notify.h"
 #include "PWSRestartIndication.h"
 #include "PWSFailureIndication.h"

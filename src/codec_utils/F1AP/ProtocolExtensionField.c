@@ -64,11 +64,11 @@ static const asn_ioc_cell_t asn_IOS_CUtoDURRCInformation_ExtIEs_1_rows[] = {
 	{ "&presence", aioc__value, &asn_DEF_Presence, &asn_VAL_5_optional },
 	{ "&id", aioc__value, &asn_DEF_ProtocolExtensionID, &asn_VAL_6_id_CellGroupConfig },
 	{ "&criticality", aioc__value, &asn_DEF_Criticality, &asn_VAL_6_ignore },
-	{ "&Extension", aioc__type, &asn_DEF_CellGroupConfigF1AP },
+	{ "&Extension", aioc__type, &asn_DEF_CellGroupConfig },
 	{ "&presence", aioc__value, &asn_DEF_Presence, &asn_VAL_6_optional },
 	{ "&id", aioc__value, &asn_DEF_ProtocolExtensionID, &asn_VAL_7_id_MeasurementTimingConfiguration },
 	{ "&criticality", aioc__value, &asn_DEF_Criticality, &asn_VAL_7_ignore },
-	{ "&Extension", aioc__type, &asn_DEF_MeasurementTimingConfigurationF1AP },
+	{ "&Extension", aioc__type, &asn_DEF_MeasurementTimingConfiguration },
 	{ "&presence", aioc__value, &asn_DEF_Presence, &asn_VAL_7_optional },
 	{ "&id", aioc__value, &asn_DEF_ProtocolExtensionID, &asn_VAL_8_id_UEAssistanceInformation },
 	{ "&criticality", aioc__value, &asn_DEF_Criticality, &asn_VAL_8_ignore },
@@ -277,7 +277,7 @@ static const asn_ioc_cell_t asn_IOS_DUtoCURRCInformation_ExtIEs_1_rows[] = {
 	{ "&presence", aioc__value, &asn_DEF_Presence, &asn_VAL_32_optional },
 	{ "&id", aioc__value, &asn_DEF_ProtocolExtensionID, &asn_VAL_33_id_DRX_Config },
 	{ "&criticality", aioc__value, &asn_DEF_Criticality, &asn_VAL_33_ignore },
-	{ "&Extension", aioc__type, &asn_DEF_DRX_ConfigF1AP },
+	{ "&Extension", aioc__type, &asn_DEF_DRX_Config },
 	{ "&presence", aioc__value, &asn_DEF_Presence, &asn_VAL_33_optional }
 };
 static const asn_ioc_set_t asn_IOS_DUtoCURRCInformation_ExtIEs_1[] = {
@@ -12464,7 +12464,7 @@ static asn_TYPE_member_t asn_MBR_extensionValue_68[] = {
 	{ ATF_NOFLAGS, 0, offsetof(struct CUtoDURRCInformation_ExtIEs__extensionValue, choice.CellGroupConfig),
 		(ASN_TAG_CLASS_UNIVERSAL | (4 << 2)),
 		0,
-		&asn_DEF_CellGroupConfigF1AP,
+		&asn_DEF_CellGroupConfig,
 		0,
 		{ 0, 0, 0 },
 		0, 0, /* No default value */
@@ -12473,7 +12473,7 @@ static asn_TYPE_member_t asn_MBR_extensionValue_68[] = {
 	{ ATF_NOFLAGS, 0, offsetof(struct CUtoDURRCInformation_ExtIEs__extensionValue, choice.MeasurementTimingConfiguration),
 		(ASN_TAG_CLASS_UNIVERSAL | (4 << 2)),
 		0,
-		&asn_DEF_MeasurementTimingConfigurationF1AP,
+		&asn_DEF_MeasurementTimingConfiguration,
 		0,
 		{ 0, 0, 0 },
 		0, 0, /* No default value */
@@ -14418,7 +14418,7 @@ static asn_TYPE_member_t asn_MBR_extensionValue_148[] = {
 	{ ATF_NOFLAGS, 0, offsetof(struct DUtoCURRCInformation_ExtIEs__extensionValue, choice.DRX_Config),
 		(ASN_TAG_CLASS_UNIVERSAL | (4 << 2)),
 		0,
-		&asn_DEF_DRX_ConfigF1AP,
+		&asn_DEF_DRX_Config,
 		0,
 		{ 0, 0, 0 },
 		0, 0, /* No default value */

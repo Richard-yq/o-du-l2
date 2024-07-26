@@ -12,7 +12,7 @@
 #include <asn_application.h>
 
 /* Including external dependencies */
-#include "PLMN-IdentityE2AP.h"
+#include "PLMN-Identity.h"
 #include "ENGNB-ID.h"
 #include <constr_SEQUENCE.h>
 
@@ -22,7 +22,7 @@ extern "C" {
 
 /* GlobalenGNB-ID */
 typedef struct GlobalenGNB_ID {
-	PLMN_IdentityE2AP_t	 pLMN_Identity;
+	PLMN_Identity_t	 pLMN_Identity;
 	ENGNB_ID_t	 gNB_ID;
 	/*
 	 * This type is extensible,
