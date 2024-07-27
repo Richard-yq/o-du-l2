@@ -16,13 +16,16 @@
 
 # This is makefile for ASN
 
-include ../common/rsys_fancy.mak
-include ../common/env.mak
+# include ../common/rsys_fancy.mak
+# include ../common/env.mak
 COLOR=$(COLOR_RED)
 
 SRC_DIR=$(ROOT_DIR)/src/codec_utils/RRC
 C_SRCS=$(wildcard $(SRC_DIR)/*.c)
 C_OBJS=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(C_SRCS))
+
+I_OPTS+=-I$(SRC_DIR)
+HDR_FILES+=$(wildcard $(SRC_DIR)/*.[hx])
 
 lib: $(LIB_DIR)/libasn_rrc.a
 include $(COM_BUILD_DIR)/compile.mak

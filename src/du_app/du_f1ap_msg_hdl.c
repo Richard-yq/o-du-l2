@@ -178,7 +178,7 @@
 #include "ReconfigurationWithSync.h"
 #include "BCCH-DL-SCH-Message.h"
 #include "du_sys_info_hdl.h"
-#include "DRX-Config.h"
+#include "DRX-ConfigF1AP.h"
 #include "MeasurementTimingConfiguration.h"
 #include "MeasurementTimingConfiguration-IEs.h"
 #include "MeasTimingList.h"
@@ -13873,7 +13873,7 @@ uint8_t extractDlRrcMsg(uint32_t gnbDuUeF1apId, uint32_t gnbCuUeF1apId, \
  *         RFAILED - failure
  *
  * ****************************************************************/
-UE_NR_Capability_t *extractUeCapability(UE_CapabilityRAT_ContainerList_t *ueCapablityListBuf, DuUeCb *ueCb)
+UE_NR_Capability_t *extractUeCapability(UE_CapabilityRAT_ContainerListF1AP_t *ueCapablityListBuf, DuUeCb *ueCb)
 {
    uint8_t  idx;
    uint16_t recvBufLen;
@@ -14425,7 +14425,7 @@ void FreeUeContextSetupRsp(F1AP_PDU_t *f1apMsg)
                         break;
                      case ProtocolIE_ID_id_DUtoCURRCInformation:
                         {
-                           CellGroupConfig_t *cellGrpCfg = NULLP;
+                           CellGroupConfigF1AP_t *cellGrpCfg = NULLP;
                            cellGrpCfg  = &ueSetRsp->protocolIEs.list.array[idx]->value.choice.\
                                          DUtoCURRCInformation.cellGroupConfig;
                            if(cellGrpCfg->buf != NULLP)
@@ -14475,7 +14475,7 @@ void FreeUeContextSetupRsp(F1AP_PDU_t *f1apMsg)
  *
  ******************************************************************/
 
-uint8_t EncodeUeCntxtDuToCuInfo(CellGroupConfig_t *duToCuCellGrp, CellGroupConfig_t *duCellGrpCfg)
+uint8_t EncodeUeCntxtDuToCuInfo(CellGroupConfigF1AP_t *duToCuCellGrp, CellGroupConfig_t *duCellGrpCfg)
 {
    asn_enc_rval_t        encRetVal;
 
