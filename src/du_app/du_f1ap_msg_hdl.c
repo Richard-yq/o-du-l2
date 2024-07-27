@@ -17,7 +17,11 @@
 *******************************************************************************/
 
 /* This file contains F1AP message handler functions */
+#include "RRC/CellGroupConfig.h"
 #include "common_def.h"
+#include "DRX-Config.h"
+#include "MeasurementTimingConfiguration.h"
+#include "MeasurementTimingConfiguration-IEs.h"
 #include "du_tmr.h"
 #include "ckw.h"
 #include "ckw.x"
@@ -75,7 +79,6 @@
 #include "RRCContainer.h"
 #include "UE-CapabilityRAT-ContainerList.h"
 #include "DRBs-Setup-List.h"
-#include "CellGroupConfig.h"
 #include "ResetAll.h"
 #include "ResetType.h"
 #include "Cells-to-be-Activated-List.h"
@@ -96,7 +99,6 @@
 #include "UE-CapabilityRAT-Container.h"
 #include "UE-CapabilityRAT-ContainerList.h"
 #include "GNB-DU-System-Information.h"
-#include "CellGroupConfig.h"
 #include "MAC-CellGroupConfig.h"
 #include "SchedulingRequestConfig.h"
 #include "SchedulingRequestToAddMod.h"
@@ -151,7 +153,6 @@
 #include "PUCCH-format4.h"
 #include "PUCCH-FormatConfig.h"
 #include "SchedulingRequestResourceConfig.h"
-#include<ProtocolIE-Field.h>
 #include "ProtocolExtensionField.h"
 #include "odu_common_codec.h"
 #include "du_mgr.h"
@@ -178,13 +179,11 @@
 #include "ReconfigurationWithSync.h"
 #include "BCCH-DL-SCH-Message.h"
 #include "du_sys_info_hdl.h"
-#include "DRX-Config.h"
-#include "MeasurementTimingConfiguration.h"
-#include "MeasurementTimingConfiguration-IEs.h"
 #include "MeasTimingList.h"
 #include "MeasTiming.h"
 #include "Cells-Status-List.h"
 #include "Cells-Status-Item.h"
+#include "ProtocolIE-Field.h"
 
 #ifdef O1_ENABLE
 #include "CmInterface.h"
