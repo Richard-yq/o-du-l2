@@ -3084,7 +3084,7 @@ uint8_t BuildTagConfig(DuUeCb *ueCb, struct TAG_Config *tagConfig)
 uint8_t BuildPhrConfig(DuUeCb *ueCb, struct SetupRelease_PHR_Config *phrConfig)
 {
 
-   phrConfig->present = SetupRelease_MRDC_SecondaryCellGroupConfig_PR_setup;
+   phrConfig->present = SetupRelease_PHR_Config_PR_setup;
    phrConfig->choice.setup = NULLP;
    DU_ALLOC(phrConfig->choice.setup, sizeof(struct PHR_Config));
    if(!phrConfig->choice.setup)
@@ -6045,32 +6045,32 @@ uint8_t BuildPuschSrvCellCfg(struct SetupRelease_PUSCH_ServingCellConfig *puschC
    puschCfg->choice.setup->codeBlockGroupTransmission = NULLP;
    puschCfg->choice.setup->rateMatching = NULLP;
    puschCfg->choice.setup->xOverhead = NULLP;
-   puschCfg->choice.setup->ext1 = NULLP;
+   // puschCfg->choice.setup->ext1 = NULLP;
 
-   DU_ALLOC(puschCfg->choice.setup->ext1, sizeof(struct PUSCH_ServingCellConfig__ext1));
-   if(!puschCfg->choice.setup->ext1)
-   {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPuschSrvCellCfg");
-      return RFAILED;
-   }
+   // DU_ALLOC(puschCfg->choice.setup->ext1, sizeof(struct PUSCH_ServingCellConfig__ext1));
+   // if(!puschCfg->choice.setup->ext1)
+   // {
+   //    DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPuschSrvCellCfg");
+   //    return RFAILED;
+   // }
 
-   puschCfg->choice.setup->ext1->maxMIMO_Layers = NULLP;
-   DU_ALLOC(puschCfg->choice.setup->ext1->maxMIMO_Layers, sizeof(long));
-   if(!puschCfg->choice.setup->ext1->maxMIMO_Layers)
-   {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPuschSrvCellCfg");
-      return RFAILED;
-   }
-   *(puschCfg->choice.setup->ext1->maxMIMO_Layers) = PUSCH_MAX_MIMO_LAYERS;
+   // puschCfg->choice.setup->ext1->maxMIMO_Layers = NULLP;
+   // DU_ALLOC(puschCfg->choice.setup->ext1->maxMIMO_Layers, sizeof(long));
+   // if(!puschCfg->choice.setup->ext1->maxMIMO_Layers)
+   // {
+   //    DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPuschSrvCellCfg");
+   //    return RFAILED;
+   // }
+   // *(puschCfg->choice.setup->ext1->maxMIMO_Layers) = PUSCH_MAX_MIMO_LAYERS;
 
-   puschCfg->choice.setup->ext1->processingType2Enabled= NULLP;
-   DU_ALLOC(puschCfg->choice.setup->ext1->processingType2Enabled,sizeof(BOOLEAN_t));
-   if(!puschCfg->choice.setup->ext1->processingType2Enabled)
-   {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPuschSrvCellCfg");
-      return RFAILED;
-   }
-   *(puschCfg->choice.setup->ext1->processingType2Enabled) = PUSCH_PROCESS_TYPE2_ENABLED;
+   // puschCfg->choice.setup->ext1->processingType2Enabled= NULLP;
+   // DU_ALLOC(puschCfg->choice.setup->ext1->processingType2Enabled,sizeof(BOOLEAN_t));
+   // if(!puschCfg->choice.setup->ext1->processingType2Enabled)
+   // {
+   //    DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPuschSrvCellCfg");
+   //    return RFAILED;
+   // }
+   // *(puschCfg->choice.setup->ext1->processingType2Enabled) = PUSCH_PROCESS_TYPE2_ENABLED;
 
    return ROK;
 }
@@ -6243,7 +6243,7 @@ uint8_t BuildUlCfg(ServCellRecfgInfo *servCellRecfg, UplinkConfig_t *ulCfg)
    }
 
    ulCfg->carrierSwitching = NULLP;
-   ulCfg->ext1 = NULLP;
+   // ulCfg->ext1 = NULLP;
    return ROK;
 }
 
@@ -6329,24 +6329,24 @@ uint8_t BuildPdschSrvCellCfg(PdschServCellCfg *pdschServCellDb, struct SetupRele
    pdschCfg->choice.setup->pucch_Cell = NULLP;
 
    /* Extension */
-   pdschCfg->choice.setup->ext1 = NULLP;
-   if(pdschServCellDb && pdschServCellDb->maxMimoLayers)
-   {
-      DU_ALLOC(pdschCfg->choice.setup->ext1, sizeof(struct PDSCH_ServingCellConfig__ext1));
-      if(pdschCfg->choice.setup->ext1 == NULLP)
-      {
-         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPdschSrvCellCfg");
-         return RFAILED;
-      }
+   // pdschCfg->choice.setup->ext1 = NULLP;
+   // if(pdschServCellDb && pdschServCellDb->maxMimoLayers)
+   // {
+   //    DU_ALLOC(pdschCfg->choice.setup->ext1, sizeof(struct PDSCH_ServingCellConfig__ext1));
+   //    if(pdschCfg->choice.setup->ext1 == NULLP)
+   //    {
+   //       DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPdschSrvCellCfg");
+   //       return RFAILED;
+   //    }
 
-      DU_ALLOC(pdschCfg->choice.setup->ext1->maxMIMO_Layers, sizeof(long));
-      if(pdschCfg->choice.setup->ext1->maxMIMO_Layers == NULLP)
-      {
-         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPdschSrvCellCfg");
-         return RFAILED;
-      }
-      *(pdschCfg->choice.setup->ext1->maxMIMO_Layers) = *(pdschServCellDb->maxMimoLayers);
-   }
+   //    DU_ALLOC(pdschCfg->choice.setup->ext1->maxMIMO_Layers, sizeof(long));
+   //    if(pdschCfg->choice.setup->ext1->maxMIMO_Layers == NULLP)
+   //    {
+   //       DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPdschSrvCellCfg");
+   //       return RFAILED;
+   //    }
+   //    *(pdschCfg->choice.setup->ext1->maxMIMO_Layers) = *(pdschServCellDb->maxMimoLayers);
+   // }
 
    return ROK;
 }
@@ -6559,10 +6559,10 @@ uint8_t BuildSpCellCfgDed(DuUeCb *ueCb, ServingCellConfig_t *srvCellCfg)
    srvCellCfg->sCellDeactivationTimer = NULLP;
    srvCellCfg->crossCarrierSchedulingConfig = NULLP;
    srvCellCfg->tag_Id = TAG_ID;
-   srvCellCfg->dummy1 = NULLP;
+   // srvCellCfg->dummy1 = NULLP;
    srvCellCfg->pathlossReferenceLinking = NULLP;
    srvCellCfg->servingCellMO = NULLP;
-   srvCellCfg->ext1 = NULLP;
+   // srvCellCfg->ext1 = NULLP;
 
    return ROK;
 }

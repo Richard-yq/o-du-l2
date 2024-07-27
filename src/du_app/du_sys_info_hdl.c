@@ -454,8 +454,8 @@ uint8_t BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
 
    idx = 0;
    /* PLMN list */
-   asn1cSequenceAdd(cellAccessInfo->plmn_IdentityInfoList.list, struct PLMN_IdentityInfo, nr_plmn_info);
-   asn1cSequenceAdd(nr_plmn_info->plmn_IdentityList.list, struct PLMN_Identity, nr_plmn);
+   asn1cSequenceAdd(cellAccessInfo->plmn_IdentityList.list, struct PLMN_IdentityInfo, nr_plmn_info);
+   asn1cSequenceAdd(nr_plmn_info->plmn_IdentityList.list, struct PLMN_IdentitY, nr_plmn);
    nr_plmn->mcc = (MCC_t *)calloc(1,sizeof(MCC_t));
    asn1cSequenceAdd(nr_plmn->mcc->list, MCC_MNC_Digit_t, mcc0);
    asn1cSequenceAdd(nr_plmn->mcc->list, MCC_MNC_Digit_t, mcc1);
@@ -480,7 +480,7 @@ uint8_t BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
    }
 
    // /* RANAC */
-   // ranac = &cellAccessInfo->plmn_IdentityInfoList.list.array[idx]->ranac;
+   // ranac = &cellAccessInfo->plmn_IdentityList.list.array[idx]->ranac;
    // ret=BuildRanac(ranac);
    // if(ret != ROK)
    // {
@@ -3159,12 +3159,12 @@ void FreeSib1Msg(SIB1_t *sib1Msg)
    if(sib1Msg != NULLP)
    {
       cellAccessInfo = &sib1Msg->cellAccessRelatedInfo;
-      if(cellAccessInfo->plmn_IdentityInfoList.list.array !=NULLP)
+      if(cellAccessInfo->plmn_IdentityList.list.array !=NULLP)
       {
-         if(cellAccessInfo->plmn_IdentityInfoList.list.array[idx]!=NULLP)
+         if(cellAccessInfo->plmn_IdentityList.list.array[idx]!=NULLP)
          {
             plmnIdInfo =
-               &cellAccessInfo->plmn_IdentityInfoList.list.array[idx]->plmn_IdentityList;
+               &cellAccessInfo->plmn_IdentityList.list.array[idx]->plmn_IdentityList;
 
             if(plmnIdInfo->list.array !=NULLP)
             {
@@ -3177,16 +3177,16 @@ void FreeSib1Msg(SIB1_t *sib1Msg)
                         if(plmnIdInfo->list.array[idx]->mnc.list.array)
                         {	      
                            /*Free Tracking Area Code */
-                           if(cellAccessInfo->plmn_IdentityInfoList.list.array[idx]->trackingAreaCode)
+                           if(cellAccessInfo->plmn_IdentityList.list.array[idx]->trackingAreaCode)
                            {	    
                               /*Free RANAC */
-                              if(cellAccessInfo->plmn_IdentityInfoList.list.array[idx]->trackingAreaCode->buf)
+                              if(cellAccessInfo->plmn_IdentityList.list.array[idx]->trackingAreaCode->buf)
                               {	   
                                  /* Free CellIdentity */
-                                 if(cellAccessInfo->plmn_IdentityInfoList.list.array[idx]->ranac)
+                                 if(cellAccessInfo->plmn_IdentityList.list.array[idx]->ranac)
                                  {
                                     cellIdentity
-                                       =&cellAccessInfo->plmn_IdentityInfoList.\
+                                       =&cellAccessInfo->plmn_IdentityList.\
                                        list.array[idx]->cellIdentity;
                                     if(cellIdentity->buf)
                                     {
@@ -3237,14 +3237,14 @@ void FreeSib1Msg(SIB1_t *sib1Msg)
                                        DU_FREE(cellIdentity->buf,cellIdentity->size);
 
                                     }
-                                    DU_FREE(cellAccessInfo->plmn_IdentityInfoList.list.array[idx]->ranac, sizeof(RAN_AreaCode_t)); 
+                                    DU_FREE(cellAccessInfo->plmn_IdentityList.list.array[idx]->ranac, sizeof(RAN_AreaCode_t)); 
 
                                  }
-                                 DU_FREE(cellAccessInfo->plmn_IdentityInfoList.list.array[idx]->trackingAreaCode->buf,\
-                                       cellAccessInfo->plmn_IdentityInfoList.list.array[idx]->trackingAreaCode->size);
+                                 DU_FREE(cellAccessInfo->plmn_IdentityList.list.array[idx]->trackingAreaCode->buf,\
+                                       cellAccessInfo->plmn_IdentityList.list.array[idx]->trackingAreaCode->size);
 
                               }
-                              DU_FREE(cellAccessInfo->plmn_IdentityInfoList.list.array[idx]->trackingAreaCode\
+                              DU_FREE(cellAccessInfo->plmn_IdentityList.list.array[idx]->trackingAreaCode\
                                     , sizeof(TrackingAreaCode_t));
                            }
 
@@ -3286,16 +3286,16 @@ void FreeSib1Msg(SIB1_t *sib1Msg)
                DU_FREE(plmnIdInfo->list.array, plmnIdInfo->list.size);
             }
          }
-         for(idx=0; idx<cellAccessInfo->plmn_IdentityInfoList.list.count; idx++)
+         for(idx=0; idx<cellAccessInfo->plmn_IdentityList.list.count; idx++)
          {
-            if(cellAccessInfo->plmn_IdentityInfoList.list.array[idx]!=NULLP)
+            if(cellAccessInfo->plmn_IdentityList.list.array[idx]!=NULLP)
             { 
-               DU_FREE(cellAccessInfo->plmn_IdentityInfoList.list.array[idx],
+               DU_FREE(cellAccessInfo->plmn_IdentityList.list.array[idx],
                      sizeof(PLMN_IdentityInfo_t));
             }
          }
-         DU_FREE(cellAccessInfo->plmn_IdentityInfoList.list.array,
-               cellAccessInfo->plmn_IdentityInfoList.list.size);
+         DU_FREE(cellAccessInfo->plmn_IdentityList.list.array,
+               cellAccessInfo->plmn_IdentityList.list.size);
       }
       DU_FREE(sib1Msg, sizeof(SIB1_t)); 
    }

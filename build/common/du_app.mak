@@ -39,9 +39,9 @@ ifdef XML_BASED_CONFIG
 I_OPTS+=-I/usr/include/libxml2
 endif
 I_OPTS+=-I$(ROOT_DIR)/src/mt
+I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/RRC
 I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/common
 I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/F1AP
-I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/RRC
 I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/E2AP
 I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/E2SM_KPM
 
